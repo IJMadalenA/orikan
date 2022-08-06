@@ -15,3 +15,16 @@
 ---
 
 [Binance Spot Test Network](https://testnet.binance.vision/)
+
+---
+
+# Adeptus Administratum
+
+## Departmento Munitorum.
+
+## Logis Strategos.
+
+## Departmento Processium.
+
+## Departmento Gradio.
+
