@@ -3,7 +3,7 @@ from django.shortcuts import render
 import environ
 import os
 
-import TradingBot.settings
+import Monitorum.settings
 
 from binance.spot import Spot
 
@@ -12,14 +12,17 @@ env = environ.Env()
 print('= = = = = STEP_1 = = = = = ')
 
 api_key = os.environ.get("BINANCE_API_KEY", None)
+print(" = = = = = API_KEY: ", api_key, " = = = = = ")
+
 secret_api_key = os.environ.get("BINANCE_SECRET_API_KEY", None)
 
+print(" = = = = = STEP_2 = = = = = ")
 
 client = Spot()
 print(client.time())
 
+# Get account information.
 client = Spot(key=api_key, secret=secret_api_key)
-
 print(client.account())
 
 # = = = = = = = = = = = = = = = = = = = = = =
