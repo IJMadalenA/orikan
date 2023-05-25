@@ -1,12 +1,23 @@
 import requests
+import logging
 import environ
 import os
+
+from binance.lib.utils import config_logging
+from binance.spot import Spot as Client
+
 
 env = environ.Env()
 
 
-class BinanceAPI:
-    BASE_URL = 'https://api.binance.com/api/v3'
+class BaseBinanceAPI:
+    BASE_URL = "https://api.binance.com"
+    ALTER_URL = [
+        "https://api1.binance.com",
+        "https://api2.binance.com",
+        "https://api3.binance.com",
+        "https://api4.binance.com",
+    ]
 
     def __init__(self, api_key, secret_key):
         """
@@ -15,11 +26,17 @@ class BinanceAPI:
         self.api_key = os.environ.get("BINANCE_API_KEY", api_key)
         self.secret_key = os.environ.get("BINANCE_SECRET_API_KEY", secret_key)
 
+        self.client = Client(key=self.api_key, secret=self.secret_key)
+
     def _request(self, method, endpoint, params=None):
         """
         Realiza una solicitud HTTP a la API de Binance con el método y endpoint especificados.
         Retorna la respuesta en formato JSON.
         """
+
+        config_logging(logging, logging.DEBUG)
+        logging.info(self.client.account_status())
+
         url = self.BASE_URL + endpoint
         headers = {'X-MBX-APIKEY': self.api_key}
 
@@ -28,21 +45,13 @@ class BinanceAPI:
 
         return response.json()
 
-    def get_historical_data(self, symbol, start_time, end_time):
-        """
-        Obtiene datos históricos del símbolo especificado en el rango de tiempo dado.
-        Retorna los datos históricos en formato JSON.
-        """
-        endpoint = '/klines'
-        params = {
-            'symbol': symbol,
-            'interval': '1d',
-            'startTime': start_time,
-            'endTime': end_time
-        }
+    def test_connection(self):
+        endpoint = "api/v3/ping"
 
-        response = self._request('GET', endpoint, params)
+        response = self._request("GET", endpoint)
+        print(response)
         return response
+
 
     def get_real_time_data(self, symbol):
         """

@@ -1,11 +1,38 @@
-from BinanceAPI.views.binance_connection import BinanceAPI
 import unittest
 
+# Binance Imports.
+from BinanceAPI.views.binance_connection import BaseBinanceAPI
+from BinanceAPI.tests.base_authentication_api import AuthenticationAPITestCase
 
-class BinanceAPIConnectionTest(unittest.TestCase):
+
+class BinanceAPIConnectionTest(AuthenticationAPITestCase):
     def setUp(self):
+        super().setUp()
+
         # Configurar la instancia de la API de Binance para pruebas
-        self.api = BinanceAPI(api_key='YOUR_API_KEY', secret_key='YOUR_SECRET_KEY')
+        self.api = BaseBinanceAPI(
+            api_key=self.api_key,
+            secret_key=self.secret_key,
+        )
+
+    def test_client_connection(self):
+        client_time = self.client.time()
+        self.assertIsNotNone(client_time)
+        self.assertIsInstance(client_time, dict)
+
+        self.assertEquals(len(self.client.klines("BNBUSDT", "1h", limit=5)), 5)
+
+    def test_user_authentication(self):
+        status = self.client.account_status()
+        snapshot = self.client.account_snapshot(type="SPOT")
+
+        self.assertIsNotNone(status)
+        self.assertIsInstance(status, dict)
+        self.assertEquals(snapshot.get("code", None), 200)
+
+        self.assertIsNotNone(snapshot)
+        self.assertIsInstance(snapshot, dict)
+        self.assertEquals(snapshot.get("code", None), 200)
 
     def test_get_historical_data(self):
         # Configurar los parámetros de prueba
