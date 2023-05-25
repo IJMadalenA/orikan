@@ -6,6 +6,8 @@ from BinanceAPI.tests.base_authentication_api import AuthenticationAPITestCase
 
 
 class BinanceAPIConnectionTest(AuthenticationAPITestCase):
+    # https://github.com/binance/binance-connector-python
+    # https://binance-docs.github.io/apidocs/spot/en/#general-info
     def setUp(self):
         super().setUp()
 
