@@ -1,3 +1,1 @@
-from BinanceAPI.tests.views_tests.binance_connection_test import (
-    BinanceAPIConnectionTest,
-)
+from BinanceAPI.tests.views_tests.base_binance_api_test import BaseBinanceAPITestCaseTest
