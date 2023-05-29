@@ -1,0 +1,67 @@
+version: '3.9'
+
+networks:
+  dolmen-gates:
+    ipam:
+      config:
+        - subnet: '172.30.0.0/16'
+
+services:
+  orikan:
+    container_name: Orikan-Container
+    hostname: orikan
+    build:
+      context: ../../orikan/
+      dockerfile: tesseract-vault/Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "python manage.py test" ]
+      interval: 30s
+      timeout: 70s
+      retries: 3
+    volumes:
+      - "../../orikan/:/home/orikan/"
+      - "static_volume:/home/orikan/static"
+      - "media_volume:/home/orikan/media"
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - dolmen-gates
+    env_file:
+      - ../.env
+#    depends_on:
+#      solemnace-galleries:
+#        condition: service_healthy
+
+  solemnace-galleries:
+    container_name: Solemnace-Galleries
+    hostname: solemnace-galleries
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    volumes:
+      - 'postgres_data:/var/lib/postgresql/data/'
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "psql pg_isready -U trazyn_the_infinite -d solemnace-galleries"]
+      interval: 5s
+      timeout: 7s
+      retries: 3
+    stdin_open: true
+    tty: true
+    env_file:
+      - ../.env
+    expose:
+      - '5432'
+    ports:
+      - '5432:5432'
+    networks:
+      - dolmen-gates
+
+volumes:
+  media_volume:
+  static_volume:
+  postgres_data:
