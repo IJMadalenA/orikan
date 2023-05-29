@@ -21,6 +21,10 @@ class BaseBinanceAPITestCase(TestCase):
 
 
 class BaseBinanceAPITestCaseTest(BaseBinanceAPITestCase):
+    def test_connection(self):
+        test_connection = self.api.test_connection()
+        self.assertTrue(test_connection)
+
     def test_get_account_info(self):
         # Prueba la función get_account_info()
         account_info = self.api.get_account_info()
