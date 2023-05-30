@@ -29,7 +29,7 @@ class PriceHistory(Model):
         max_digits=20,
         decimal_places=10,
         help_text="Precio de apertura",
-        verbose_name="Precio de apertura,"
+        verbose_name="Precio de apertura,",
     )
     high_price = DecimalField(
         blank=False,
@@ -66,6 +66,13 @@ class PriceHistory(Model):
         decimal_places=10,
         help_text="Volumen de negociación",
         verbose_name="Volumen de negoción",
+    )
+    created_at = DateTimeField(
+        auto_now_add=True,
+        blank=False,
+        null=False,
+        editable=False,
+        help_text="Fecha y hora de creación",
     )
 
     class Meta:
