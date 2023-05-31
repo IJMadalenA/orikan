@@ -2,7 +2,7 @@ import logging
 import environ
 import os
 
-from binance import Client
+from binance.client import Client
 
 env = environ.Env()
 
