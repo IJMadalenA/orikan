@@ -4,13 +4,11 @@ from datetime import (
 )
 from factory.fuzzy import (
     FuzzyDecimal,
-    FuzzyText,
-    FuzzyChoice,
     FuzzyDateTime,
 )
 from factory import SubFactory
 
-from BinanceAPI.factories import SymbolFactory
+from BinanceAPI.factories.symbol_factory import SymbolFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
 
 
