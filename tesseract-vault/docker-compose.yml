@@ -1,11 +1,5 @@
 version: '3.9'
 
-networks:
-  dolmen-gates:
-    ipam:
-      config:
-        - subnet: '172.30.0.0/16'
-
 services:
   orikan:
     container_name: Orikan-Container
@@ -28,17 +22,15 @@ services:
       - "8000"
     ports:
       - "8000:8000"
-    networks:
-      - dolmen-gates
     env_file:
       - ../.env
-#    depends_on:
-#      solemnace-galleries:
-#        condition: service_healthy
+    depends_on:
+      solemnace_galleries:
+        condition: service_healthy
 
-  solemnace-galleries:
-    container_name: Solemnace-Galleries
-    hostname: solemnace-galleries
+  solemnace_galleries:
+    container_name: Solemnace_Galleries
+    hostname: solemnace_galleries
     build:
       context: .
       dockerfile: Dockerfile.db
@@ -58,8 +50,6 @@ services:
       - '5432'
     ports:
       - '5432:5432'
-    networks:
-      - dolmen-gates
 
 volumes:
   media_volume:
