@@ -9,11 +9,11 @@ from urllib3 import HTTPResponse
 # .env data.
 import Monitorum.settings
 env = environ.Env()
-api_key = os.environ.get("POLYGON_API_KEY", None)
+public_api_key = os.environ.get("POLYGON_API_KEY", None)
 
 
 # Create your views here.
-client = RESTClient(api_key)
+client = RESTClient(public_api_key)
 
 trades = []
 for t in client.list_trades("AAA", "2022-04-04", limit=5):
