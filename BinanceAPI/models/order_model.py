@@ -1,12 +1,13 @@
 from django.db.models import (
-    Model,
     CharField,
     DateTimeField,
     DecimalField,
 )
 
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
-class Order(Model):
+
+class Order(BaseBinanceModel):
     SIDE_CHOICES = (
         ('BUY', 'Buy'),
         ('SELL', 'Sell'),
@@ -27,6 +28,7 @@ class Order(Model):
         verbose_name="symbolo del activo",
     )
     order_id = CharField(
+        db_index=True,
         max_length=50,
         unique=True,
         blank=False,
@@ -70,14 +72,6 @@ class Order(Model):
         editable=False,
         help_text="Estado de la orden",
         verbose_name="Estado de la orden",
-    )
-    created_at = DateTimeField(
-        auto_now_add=True,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Fecha y hora de creación",
-        verbose_name="Fecha y hora de creación",
     )
 
     class Meta:

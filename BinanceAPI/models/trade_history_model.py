@@ -1,13 +1,14 @@
 from django.db.models import (
-    Model,
     CharField,
     DateTimeField,
     DecimalField,
     BooleanField
 )
 
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
-class TradeHistory(Model):
+
+class TradeHistory(BaseBinanceModel):
     symbol = CharField(
         max_length=50,
         blank=False,
@@ -57,13 +58,6 @@ class TradeHistory(Model):
         null=False,
         editable=False,
         help_text="Indica si esta operación es ignorada en el historial."
-    )
-    created_at = DateTimeField(
-        auto_now_add=True,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Fecha y hora de creación"
     )
 
     class Meta:

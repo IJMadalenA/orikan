@@ -1,12 +1,13 @@
 from django.db.models import (
-    Model,
     CharField,
     DateTimeField,
     DecimalField,
 )
 
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
-class PriceHistory(Model):
+
+class PriceHistory(BaseBinanceModel):
     symbol = CharField(
         max_length=10,
         blank=False,
@@ -66,13 +67,6 @@ class PriceHistory(Model):
         decimal_places=10,
         help_text="Volumen de negociación",
         verbose_name="Volumen de negoción",
-    )
-    created_at = DateTimeField(
-        auto_now_add=True,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Fecha y hora de creación",
     )
 
     class Meta:

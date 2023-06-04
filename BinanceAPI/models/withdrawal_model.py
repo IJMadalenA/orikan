@@ -1,12 +1,13 @@
 from django.db.models import (
-    Model,
     CharField,
     DateTimeField,
     DecimalField,
 )
 
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
-class Withdrawal(Model):
+
+class Withdrawal(BaseBinanceModel):
     """
     Este modelo almacena la información sobre las retiradas realizadas desde la cuenta.
     """
@@ -17,6 +18,7 @@ class Withdrawal(Model):
     )
 
     withdrawal_id = CharField(
+        db_index=True,
         max_length=100,
         unique=True,
         blank=False,
@@ -81,13 +83,6 @@ class Withdrawal(Model):
         blank=True,
         editable=False,
         help_text="Hash de la transacción",
-    )
-    created_at = DateTimeField(
-        auto_now_add=True,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Fecha y hora de creación",
     )
 
     class Meta:

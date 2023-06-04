@@ -1,13 +1,14 @@
 from django.db.models import (
-    Model,
     CharField,
     DateTimeField,
     DecimalField,
     IntegerField,
 )
 
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
-class Deposit(Model):
+
+class Deposit(BaseBinanceModel):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('success', 'Success'),
@@ -48,7 +49,7 @@ class Deposit(Model):
         max_length=100,
         null=True,
         blank=True,
-        edotanñe=False,
+        editable=False,
         help_text="ID de transacción"
     )
     status = CharField(

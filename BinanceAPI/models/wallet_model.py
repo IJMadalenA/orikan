@@ -1,11 +1,12 @@
 from django.db.models import (
-    Model,
     CharField,
     DecimalField,
 )
 
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
-class Wallet(Model):
+
+class Wallet(BaseBinanceModel):
     ASSET_CHOICES = (
         ('BTC', 'Bitcoin'),
         ('ETH', 'Ethereum'),

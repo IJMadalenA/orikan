@@ -1,14 +1,15 @@
 from django.db.models import (
-    Model,
     ForeignKey,
     DateTimeField,
     DecimalField,
     CASCADE
 )
-from BinanceAPI.models import Symbol
+
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
+from BinanceAPI.models.symbol_model import Symbol
 
 
-class Candlestick(Model):
+class Candlestick(BaseBinanceModel):
     symbol = ForeignKey(
         Symbol,
         on_delete=CASCADE,

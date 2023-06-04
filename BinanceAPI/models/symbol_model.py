@@ -1,11 +1,12 @@
 from django.db.models import (
-    Model,
     CharField,
     IntegerField,
 )
 
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
-class Symbol(Model):
+
+class Symbol(BaseBinanceModel):
     symbol = CharField(
         max_length=20,
         unique=True,

@@ -1,5 +1,4 @@
 from django.db.models import (
-    Model,
     BigIntegerField,
     DateTimeField,
     ForeignKey,
@@ -7,10 +6,12 @@ from django.db.models import (
     DecimalField,
     CASCADE,
 )
-from BinanceAPI.models import Symbol
+
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
+from BinanceAPI.models.symbol_model import Symbol
 
 
-class OrderBook(Model):
+class OrderBook(BaseBinanceModel):
     symbol = ForeignKey(
         Symbol,
         on_delete=CASCADE,
@@ -84,13 +85,6 @@ class OrderBook(Model):
         blank=True,
         editable=False,
         help_text="La profundidad del libro de órdenes.",
-    )
-    created_at = DateTimeField(
-        auto_now_add=True,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Fecha y hora de creación"
     )
 
     class Meta:

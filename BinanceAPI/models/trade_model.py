@@ -1,5 +1,4 @@
 from django.db.models import (
-    Model,
     CharField,
     DateTimeField,
     DecimalField,
@@ -7,8 +6,10 @@ from django.db.models import (
     BigIntegerField,
 )
 
+from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
-class Trade(Model):
+
+class Trade(BaseBinanceModel):
     SIDE_CHOICES = (
         ('BUY', 'Buy'),
         ('SELL', 'Sell'),
