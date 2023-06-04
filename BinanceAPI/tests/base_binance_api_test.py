@@ -1,5 +1,6 @@
 from django.test import TestCase
 import environ
+import os
 
 # Binance imports.
 from BinanceAPI.views.base_binance_api import BaseBinanceAPI
@@ -14,9 +15,11 @@ class BaseBinanceAPITestCase(TestCase):
     """
 
     def setUp(self) -> None:
+        self.public_api_key = os.environ.get("BINANCE_PUBLIC_API_KEY", None)
+        self.secret_api_key = os.environ.get("BINANCE_SECRET_API_KEY", None)
         self.api = BaseBinanceAPI(
-            api_key='tu_api_key',
-            api_secret='tu_api_secret'
+            public_api_key=self.public_api_key,
+            secret_api_key=self.secret_api_key,
         )
 
 
