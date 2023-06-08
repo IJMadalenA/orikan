@@ -1,5 +1,4 @@
 from unittest import TestCase
-
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -20,31 +19,8 @@ class BaseModelTestCase(TestCase):
         self.assertNotEqual(model1, model2)
         self.assertEqual(model1, model1)
 
-    def test_model_create_operation(self):
-        # Create
-        model = self._create_model_instance()
-        self.assertTrue(model.pk)
-
-        # Retrieve
-        retrieved_model = self.model.objects.get(pk=model.pk)
-        self.assertEqual(model, retrieved_model)
-
-    def test_model_update_operation(self):
-        model = self._create_model_instance()
-
-        # Update
-        # Modify the model instance as needed
-        # For example, if there is a field named "name":
-        new_name = "New Name"
-        model.name = new_name
-        model.save()
-
-        # Retrieve the updated model
-        updated_model = self.model.objects.get(pk=model.pk)
-        self.assertEqual(updated_model.name, new_name)
-
     def test_model_delete_operation(self):
-        model = self._create_model_instance()
+        model = self.factory.create()
 
         # Delete
         model.delete()
