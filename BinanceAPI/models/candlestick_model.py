@@ -68,13 +68,6 @@ class Candlestick(BaseBinanceModel):
         decimal_places=10,
         help_text="Volumen de trading de la vela"
     )
-    created_at = DateTimeField(
-        auto_now_add=True,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Fecha y hora de creación"
-    )
 
     class Meta:
         db_table = 'candlesticks'
