@@ -11,6 +11,7 @@ from factory import SubFactory
 
 from BinanceAPI.factories import SymbolFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
+from BinanceAPI.models import TradeHistory
 
 
 class TradeHistoryFactory(BaseBinanceFactory):
@@ -24,3 +25,6 @@ class TradeHistoryFactory(BaseBinanceFactory):
     is_buyer_maker = FuzzyChoice(['TRUE', 'FALSE']).fuzz()
     is_best_match = FuzzyChoice(['TRUE', 'FALSE']).fuzz()
     is_ignored = FuzzyChoice(['TRUE', 'FALSE']).fuzz()
+
+    class Meta:
+        model = TradeHistory

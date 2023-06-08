@@ -4,6 +4,7 @@ from factory.fuzzy import (
 )
 
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
+from BinanceAPI.models import Wallet
 
 
 class WalletFactory(BaseBinanceFactory):
@@ -12,3 +13,5 @@ class WalletFactory(BaseBinanceFactory):
     locked = FuzzyDecimal(low=1.00).fuzz()
     total = FuzzyDecimal(low=1.00).fuzz()
 
+    class Meta:
+        model = Wallet

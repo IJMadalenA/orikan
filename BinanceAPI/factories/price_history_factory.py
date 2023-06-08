@@ -10,6 +10,7 @@ from factory import SubFactory
 
 from BinanceAPI.factories.symbol_factory import SymbolFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
+from BinanceAPI.models import PriceHistory
 
 
 class PriceHistoryFactory(BaseBinanceFactory):
@@ -23,3 +24,6 @@ class PriceHistoryFactory(BaseBinanceFactory):
     low_price = FuzzyDecimal(low=1.00).fuzz()
     close_price = FuzzyDecimal(low=1.00).fuzz()
     volume = FuzzyDecimal(low=1.00).fuzz()
+
+    class Meta:
+        model = PriceHistory

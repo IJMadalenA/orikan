@@ -13,6 +13,7 @@ from factory import SubFactory
 
 from BinanceAPI.factories import SymbolFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
+from BinanceAPI.models import Trade
 
 
 class TradeFactory(BaseBinanceFactory):
@@ -36,3 +37,6 @@ class TradeFactory(BaseBinanceFactory):
     trade_time = FuzzyInteger(low=10000).fuzz()
     buyer_is_maker = FuzzyChoice([True, False]).fuzz()
     ignore = FuzzyChoice([True, False]).fuzz()
+
+    class Meta:
+        model = Trade

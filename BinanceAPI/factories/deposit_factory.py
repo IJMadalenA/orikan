@@ -5,13 +5,18 @@ from datetime import (
 from factory.fuzzy import (
     FuzzyDecimal,
     FuzzyChoice,
-    FuzzyText, FuzzyDateTime, FuzzyInteger
+    FuzzyText,
+    FuzzyDateTime,
+    FuzzyInteger
 )
+from factory import LazyAttribute
+
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
+from BinanceAPI.models import Deposit
 
 
 class DepositFactory(BaseBinanceFactory):
-    deposit_id = FuzzyText().fuzz()
+    deposit_id = LazyAttribute(lambda obj: DepositFactory.generate_deposit_id())
     amount = FuzzyDecimal(low=1.00).fuzz()
     asset = FuzzyText().fuzz()
     address = FuzzyText().fuzz()
@@ -28,3 +33,11 @@ class DepositFactory(BaseBinanceFactory):
     confirmations = FuzzyInteger(low=1).fuzz()
     fee = FuzzyDecimal(low=1.0).fuzz()
     tx_hash = FuzzyText().fuzz()
+
+    # Utiliza LazyAttribute para generar valores únicos
+    @staticmethod
+    def generate_deposit_id():
+        return FuzzyText(length=10, chars='0123456789').fuzz()
+
+    class Meta:
+        model = Deposit

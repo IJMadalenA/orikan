@@ -4,6 +4,7 @@ from factory.fuzzy import (
 )
 
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
+from BinanceAPI.models.balance_model import Balance
 
 
 class BalanceFactory(BaseBinanceFactory):
@@ -17,3 +18,6 @@ class BalanceFactory(BaseBinanceFactory):
     in_order = FuzzyDecimal(low=1.000).fuzz()
     btc_value = FuzzyDecimal(low=1.000).fuzz()
     eth_value = FuzzyDecimal(low=1.000).fuzz()
+
+    class Meta:
+        model = Balance

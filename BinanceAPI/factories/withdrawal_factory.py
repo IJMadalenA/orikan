@@ -10,6 +10,7 @@ from factory.fuzzy import (
 )
 
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
+from BinanceAPI.models import Withdrawal
 
 
 class WithdrawalFactory(BaseBinanceFactory):
@@ -29,3 +30,6 @@ class WithdrawalFactory(BaseBinanceFactory):
     )
     fee = FuzzyDecimal(low=1.00).fuzz()
     tx_hash = FuzzyText().fuzz()
+
+    class Meta:
+        model = Withdrawal
