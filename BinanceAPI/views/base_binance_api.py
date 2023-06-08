@@ -9,20 +9,20 @@ env = environ.Env()
 
 class BaseBinanceAPI:
 
-    def __init__(self, api_key: str, api_secret: str):
+    def __init__(self, public_api_key: str, secret_api_key: str):
         """
         Inicializa una instancia de la clase BinanceAPI.
 
         Args:
-            api_key: Clave API de Binance.
-            api_secret: Clave secreta de la API de Binance.
+            public_api_key: Clave API de Binance.
+            secret_api_key: Clave secreta de la API de Binance.
         """
         self.logger = logging.getLogger(__name__)
-        self.api_key = os.environ.get("BINANCE_API_KEY", api_key)
-        self.api_secret = os.environ.get("BINANCE_SECRET_API_KEY", api_secret)
+        self.public_api_key = os.environ.get("BINANCE_PUBLIC_API_KEY", public_api_key)
+        self.secret_api_key = os.environ.get("BINANCE_SECRET_API_KEY", secret_api_key)
         self.client = Client(
-            api_key=self.api_key,
-            api_secret=self.api_secret,
+            api_key=self.public_api_key,
+            api_secret=self.secret_api_key,
         )
 
     def test_connection(self) -> bool:
