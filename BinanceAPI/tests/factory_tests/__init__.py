@@ -3,3 +3,9 @@ from BinanceAPI.tests.factory_tests.balance_factory_test import BalanceFactoryTe
 from BinanceAPI.tests.factory_tests.candlestick_factory_test import CandlestickFactoryTestCase
 from BinanceAPI.tests.factory_tests.deposit_factory_test import DepositFactoryTestCase
 from BinanceAPI.tests.factory_tests.order_factory_test import OrderFactoryTestCase
+from BinanceAPI.tests.factory_tests.price_factory_test import PriceHistoryFactoryTestCase
+from BinanceAPI.tests.factory_tests.symbol_factory_test import SymbolFactoryTestCase
+from BinanceAPI.tests.factory_tests.trade_factory_test import TradeFactoryTestCase
+from BinanceAPI.tests.factory_tests.trade_history_factory_test import TradeHistoryFactoryTestCase
+from BinanceAPI.tests.factory_tests.wallet_factory_test import WalletFactoryTestCase
+from BinanceAPI.tests.factory_tests.withdrawal_factory_test import WithdrawalFactoryTestCase

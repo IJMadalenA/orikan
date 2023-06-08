@@ -10,6 +10,7 @@ class BaseFactoryTestCase(TestCase):
         model = self.factory()
 
         self.assertTrue(model.pk)
+        self.assertTrue(self.factory._meta.model.objects.get(pk=model.pk))
 
     def test_factory_count(self):
         model_count_before = self.factory._meta.model.objects.count()
