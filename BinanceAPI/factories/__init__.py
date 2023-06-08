@@ -7,6 +7,7 @@ from BinanceAPI.factories.order_book_factory import OrderBookFactory
 from BinanceAPI.factories.order_factory import OrderFactory
 from BinanceAPI.factories.price_history_factory import PriceHistoryFactory
 from BinanceAPI.factories.symbol_factory import SymbolFactory
+from BinanceAPI.factories.trade_factory import TradeFactory
 from BinanceAPI.factories.trade_history_factory import TradeHistoryFactory
 from BinanceAPI.factories.wallet_factory import WalletFactory
 from BinanceAPI.factories.withdrawal_factory import WithdrawalFactory

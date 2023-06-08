@@ -2,19 +2,19 @@ from datetime import (
     datetime,
     UTC
 )
+from factory import LazyAttribute
 from factory.fuzzy import (
     FuzzyDecimal,
     FuzzyDateTime,
     FuzzyChoice,
     FuzzyText,
 )
-
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
 from BinanceAPI.models import Withdrawal
 
 
 class WithdrawalFactory(BaseBinanceFactory):
-    withdrawal_id = FuzzyText().fuzz()
+    withdrawal_id = LazyAttribute(lambda obj: BaseBinanceFactory.generate_unique_id())
     amount = FuzzyDecimal(low=1.00).fuzz()
     asset = FuzzyText().fuzz()
     address = FuzzyText().fuzz()

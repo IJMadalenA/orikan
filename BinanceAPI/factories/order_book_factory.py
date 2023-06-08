@@ -24,7 +24,7 @@ class OrderBookFactory(BaseBinanceFactory):
     # asks = JSON
     # bids = JSON
     ask_total_volume = FuzzyDecimal(low=1.000).fuzz()
-    big_total_volume = FuzzyDecimal(low=1.000).fuzz()
+    bid_total_volume = FuzzyDecimal(low=1.000).fuzz()
     spread = FuzzyDecimal(low=1.000).fuzz()
     liquidity = FuzzyDecimal(low=1.000).fuzz()
     depth = FuzzyDecimal(low=1.000).fuzz()

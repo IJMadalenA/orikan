@@ -22,9 +22,9 @@ class TradeHistoryFactory(BaseBinanceFactory):
     )
     price = FuzzyDecimal(low=1.00)
     quantity = FuzzyDecimal(low=1.00)
-    is_buyer_maker = FuzzyChoice(['TRUE', 'FALSE']).fuzz()
-    is_best_match = FuzzyChoice(['TRUE', 'FALSE']).fuzz()
-    is_ignored = FuzzyChoice(['TRUE', 'FALSE']).fuzz()
+    is_buyer_maker = FuzzyChoice([True, False]).fuzz()
+    is_best_match = FuzzyChoice([True, False]).fuzz()
+    is_ignored = FuzzyChoice([True, False]).fuzz()
 
     class Meta:
         model = TradeHistory
