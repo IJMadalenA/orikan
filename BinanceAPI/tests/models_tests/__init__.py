@@ -1,5 +1,5 @@
 from BinanceAPI.tests.models_tests.account_model_test import AccountModelTestCase
-from BinanceAPI.tests.models_tests.balance_model_test import BalanceModelTestCase
+from BinanceAPI.tests.models_tests.balance_spot_model_test import BalanceModelTestCase
 from BinanceAPI.tests.models_tests.candlestick_model_test import CandlestickModelTestCase
 from BinanceAPI.tests.models_tests.deposit_model_test import DepositModelTestCase
 from BinanceAPI.tests.models_tests.order_book_model_test import OrderBookModelTestCase
