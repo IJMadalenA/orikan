@@ -35,3 +35,6 @@ class BaseBinanceModel(Model):
             api_key=self.public_api_key,
             api_secret=self.secret_api_key,
         )
+
+# apps.get_model(BaseBinanceModel, model )
+

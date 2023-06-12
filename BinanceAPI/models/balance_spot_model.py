@@ -9,7 +9,11 @@ from BinanceAPI.models import Account
 from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
 
-class BalanceSnapshot(BaseBinanceModel):
+class BalanceSpot(BaseBinanceModel):
+    """
+    Este modelo se rellena casi en su totalidad a traves
+    del método `get_account_snapshot("SPOT")`.
+    """
     ASSET_CHOICES = (
         ('BTC', 'Bitcoin'),
         ('ETH', 'Ethereum'),
@@ -20,6 +24,7 @@ class BalanceSnapshot(BaseBinanceModel):
         on_delete=CASCADE
     )
     asset = CharField(
+        # Siglas de la moneda, provisto por `get_account_snapshot("SPOT")`.
         max_length=10,
         choices=ASSET_CHOICES,
         blank=False,
@@ -28,6 +33,7 @@ class BalanceSnapshot(BaseBinanceModel):
         help_text="Activo",
     )
     free = DecimalField(
+        # Provisto por `get_account_snapshot("SPOT")`.
         max_digits=20,
         decimal_places=10,
         blank=False,
@@ -36,6 +42,7 @@ class BalanceSnapshot(BaseBinanceModel):
         help_text="Cantidad disponible",
     )
     locked = DecimalField(
+        # Provisto por `get_account_snapshot("SPOT")`.
         max_digits=20,
         decimal_places=10,
         blank=False,
@@ -44,6 +51,7 @@ class BalanceSnapshot(BaseBinanceModel):
         help_text="Cantidad bloqueada",
     )
     total = DecimalField(
+        # Provisto por `get_account_snapshot("SPOT")`.
         max_digits=20,
         decimal_places=10,
         blank=False,

@@ -1,5 +1,5 @@
 from BinanceAPI.models.account_model import Account
-from BinanceAPI.models.balance_model import Balance
+from BinanceAPI.models.balance_spot_model import BalanceSpot
 from BinanceAPI.models.candlestick_model import Candlestick
 from BinanceAPI.models.deposit_model import Deposit
 from BinanceAPI.models.order_book_model import OrderBook
