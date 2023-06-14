@@ -18,7 +18,24 @@ class Account(BaseBinanceModel):
         ('Normal', 'Normal'),
         ('INACTIVE', 'Inactive'),
     )
-
+    api_public_key = CharField(
+        # Único campo que no sale de la API.
+        # Por defecto es la llave pública de la cuenta.
+        db_index=True,
+        blank=False,
+        null=False,
+        editable=True,
+        max_length=64,
+        default='CzsU0SaKUOsHUnYgTGyX3LgbiohGE45rO6xOq5NoY2ahAXnljW90ivfNf0wGE6wj',
+        help_text="Public Key for account."
+    )
+    name = CharField(
+        blank=True,
+        null=True,
+        editable=True,
+        max_length=128,
+        help_text="Nombre de la cuenta."
+    )
     status = CharField(
         # Rellenado por `get_account_status()`.
         blank=False,
@@ -164,6 +181,10 @@ class Account(BaseBinanceModel):
                 api_permission = cls.__api__().get_account_api_permissions()
                 account_status = cls.__api__().get_account_status()
 
+                account = Account.objects.first()
+
+                # Cada método que llama a la API de Binance retorna solo una parte de la información, por lo que
+                # debemos unificar la información para poderla insertar en un solo movimiento.
                 unified_data = {
                     'status': account_status.get('data', None),
                     'maker_commission': Decimal(account_data.get('makerCommission', None)),
@@ -185,7 +206,12 @@ class Account(BaseBinanceModel):
                     'trading_authority_expiration_time': api_permission.get('tradingAuthorityExpirationTime', 0),
                 }
 
-                serializer = AccountSerializerInput(data=unified_data)
+                # Verificamos si ya existe una cuenta, y de ser así simplemente se actualiza la información.
+                if account:
+                    serializer = AccountSerializerInput(account, data=unified_data)
+                else:
+                    serializer = AccountSerializerInput(data=unified_data)
+
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
 
@@ -197,4 +223,4 @@ class Account(BaseBinanceModel):
         self.load_account_data()
 
     def __str__(self):
-        return self.id
+        return str(self.id)
