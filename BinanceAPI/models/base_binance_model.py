@@ -3,11 +3,10 @@ import environ
 
 # Django imported.
 from django.db.models import Model
+from django.db.models import DateTimeField
 
 # Models imported.
 from binance.client import Client
-
-from django.db.models import DateTimeField
 
 env = environ.Env()
 
@@ -25,16 +24,15 @@ class BaseBinanceModel(Model):
     class Meta:
         abstract = True
 
-    def __api__(self):
+    @classmethod
+    def __api__(cls):
         """
         Inicializa una instancia de modelo de BinanceAPI.
         """
-        self.public_api_key = os.environ.get("BINANCE_PUBLIC_API_KEY", None)
-        self.secret_api_key = os.environ.get("BINANCE_SECRET_API_KEY", None)
-        self.client = Client(
-            api_key=self.public_api_key,
-            api_secret=self.secret_api_key,
-        )
+        public_api_key = os.environ.get("BINANCE_PUBLIC_API_KEY", None)
+        secret_api_key = os.environ.get("BINANCE_SECRET_API_KEY", None)
+        client = Client(api_key=public_api_key, api_secret=secret_api_key)
+        return client
 
 # apps.get_model(BaseBinanceModel, model )
 

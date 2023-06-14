@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class Account(BaseBinanceModel):
     STATUS_CHOICES = (
-        ('ACTIVE', 'Active'),
+        ('Normal', 'Normal'),
         ('INACTIVE', 'Inactive'),
     )
 
@@ -143,8 +143,8 @@ class Account(BaseBinanceModel):
     )
     trading_authority_expiration_time = PositiveBigIntegerField(
         # Rellenado por `get_account_api_permission()`.
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         editable=True,
         help_text="Fecha de expiración de la autorizacíon de la API"
     )
@@ -161,15 +161,15 @@ class Account(BaseBinanceModel):
 
             try:
                 account_data = cls.__api__().get_account()
-                api_permission = cls.__api__().get_account_api_permission()
+                api_permission = cls.__api__().get_account_api_permissions()
                 account_status = cls.__api__().get_account_status()
 
                 unified_data = {
                     'status': account_status.get('data', None),
-                    'maker_commission': Decimal(account_data.get('makerCommission', 0)),
-                    'taker_commission': Decimal(account_data.get('takerCommission', 0)),
-                    'buyer_commission': Decimal(account_data.get('buyerCommission', 0)),
-                    'seller_commission': Decimal(account_data.get('sellerCommission', 0)),
+                    'maker_commission': Decimal(account_data.get('makerCommission', None)),
+                    'taker_commission': Decimal(account_data.get('takerCommission', None)),
+                    'buyer_commission': Decimal(account_data.get('buyerCommission', None)),
+                    'seller_commission': Decimal(account_data.get('sellerCommission', None)),
                     'can_trade': account_data.get('canTrade', None),
                     'can_withdraw': account_data.get('canWithdraw', None),
                     'can_deposit': account_data.get('canDeposit', None),
@@ -182,7 +182,7 @@ class Account(BaseBinanceModel):
                     'enable_futures': api_permission.get('enableFutures', None),
                     'enable_margin': api_permission.get('enableMargin', None),
                     'enable_spot_and_margin_trade': api_permission.get('enableSpotAndMarginTrading', None),
-                    'trading_authority_expiration_time': api_permission.get('tradingAuthorityExpirationTime', None),
+                    'trading_authority_expiration_time': api_permission.get('tradingAuthorityExpirationTime', 0),
                 }
 
                 serializer = AccountSerializerInput(data=unified_data)
