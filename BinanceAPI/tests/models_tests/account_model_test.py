@@ -10,7 +10,7 @@ class AccountModelTestCase(BaseModelTestCase):
 
     def setUp(self):
         self.account_data = {
-            'status': 'ACTIVE',
+            'status': 'Normal',
             'maker_commission': 15,
             'taker_commission': 15,
             'buyer_commission': 0,
@@ -32,7 +32,7 @@ class AccountModelTestCase(BaseModelTestCase):
 
     def test_create_account(self):
         account = Account.objects.create(**self.account_data)
-        self.assertEqual(account.status, 'ACTIVE')
+        self.assertEqual(account.status, 'Normal')
         self.assertEqual(account.maker_commission, 15)
         self.assertEqual(account.taker_commission, 15)
         self.assertEqual(account.buyer_commission, 0)
@@ -54,7 +54,7 @@ class AccountModelTestCase(BaseModelTestCase):
     def test_update_account(self):
         account = Account.objects.create(**self.account_data)
         updated_data = {
-            'status': 'ACTIVE',
+            'status': 'Normal',
             'maker_commission': 15,
             'taker_commission': 15,
             'buyer_commission': 0,
@@ -76,7 +76,8 @@ class AccountModelTestCase(BaseModelTestCase):
         serializer = AccountSerializerInput(data=updated_data, instance=account)
         serializer.is_valid(raise_exception=True)
         account = serializer.update(account, serializer.validated_data)
-        self.assertEqual(account.status, 'ACTIVE')
+
+        self.assertEqual(account.status, 'Normal')
         self.assertEqual(account.maker_commission, 15)
         self.assertEqual(account.taker_commission, 15)
         self.assertEqual(account.buyer_commission, 0)
