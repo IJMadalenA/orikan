@@ -1,12 +1,31 @@
+import logging
+
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
+from django.db.utils import OperationalError
+from django.db import connections
 
 from BinanceAPI.models import Account
 
-# Al momento de inicializar el Admin, si no hay un usuario registrado, esta función
-# se ejecutará y cargará el usuario relacionado con las llaves.
-if not Account.objects.first():
-    Account.load_account_data()
+logger = logging.getLogger(__name__)
+
+
+# Ya que este script se ejecuta al momento de levantar el Admin,
+# verificamos si las migraciones han sido aplicadas y si la tabla Account existe,
+# en caso contrario simplemente pasamos y no ocurren errores.
+try:
+    account_table_name = Account._meta.db_table
+    if account_table_name in connections['default'].introspection.table_names():
+        if not Account.objects.exists():
+            Account.load_account_data()
+    else:
+        pass
+except OperationalError as e:
+    # Error de base de datos, como una conexión perdida o acceso denegado
+    logger.exception("Database error while checking Account table: %s", str(e))
+except Exception as e:
+    logger.exception("Error loading account data from Admin: %s", str(e))
+    raise
 
 
 @admin.register(Account)

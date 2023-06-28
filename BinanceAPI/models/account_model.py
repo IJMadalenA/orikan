@@ -1,4 +1,5 @@
 import logging
+import os
 from decimal import Decimal
 
 from django.db.models import (
@@ -186,6 +187,7 @@ class Account(BaseBinanceModel):
                 # Cada método que llama a la API de Binance retorna solo una parte de la información, por lo que
                 # debemos unificar la información para poderla insertar en un solo movimiento.
                 unified_data = {
+                    'public_key': os.environ.get("BINANCE_PUBLIC_API_KEY", None),
                     'status': account_status.get('data', None),
                     'maker_commission': Decimal(account_data.get('makerCommission', None)),
                     'taker_commission': Decimal(account_data.get('takerCommission', None)),
@@ -223,4 +225,7 @@ class Account(BaseBinanceModel):
         self.load_account_data()
 
     def __str__(self):
-        return str(self.id)
+        if self.name:
+            return str(self.name)
+        else:
+            return str(self.id)
