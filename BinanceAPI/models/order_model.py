@@ -19,7 +19,7 @@ class Order(BaseBinanceModel):
         ('CANCELED', 'Canceled'),
     )
 
-    symbol = CharField(
+    asset = CharField(
         max_length=10,
         blank=False,
         null=False,

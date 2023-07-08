@@ -13,14 +13,14 @@ from factory import (
     SubFactory,
     LazyAttribute
 )
-from BinanceAPI.factories import SymbolFactory
+from BinanceAPI.factories import AssetFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
 from BinanceAPI.models import Trade
 
 
 class TradeFactory(BaseBinanceFactory):
     trade_id = LazyAttribute(lambda obj: BaseBinanceFactory.generate_unique_id())
-    symbol = SubFactory(SymbolFactory)
+    asset = SubFactory(AssetFactory)
     side = FuzzyText().fuzz()
     price = FuzzyDecimal(low=1.00).fuzz()
     quantity = FuzzyDecimal(low=1.00).fuzz()

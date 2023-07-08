@@ -12,7 +12,13 @@ env = environ.Env()
 
 
 class BaseBinanceModel(Model):
-
+    updated_at = DateTimeField(
+        auto_now=True,
+        blank=False,
+        null=False,
+        editable=False,
+        help_text="Fecha y hora de actualización"
+    )
     created_at = DateTimeField(
         auto_now_add=True,
         blank=False,

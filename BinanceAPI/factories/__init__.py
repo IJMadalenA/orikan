@@ -1,6 +1,9 @@
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
+
 from BinanceAPI.factories.account_factory import AccountFactory
-from BinanceAPI.factories.balance_factory import BalanceFactory
+from BinanceAPI.factories.asset_factory import AssetFactory
+from BinanceAPI.factories.avg_price_factory import AvgPriceFactory
+from BinanceAPI.factories.balance_spot_factory import BalanceSpotFactory
 from BinanceAPI.factories.candlestick_factory import CandlestickFactory
 from BinanceAPI.factories.deposit_factory import DepositFactory
 from BinanceAPI.factories.order_book_factory import OrderBookFactory

@@ -8,13 +8,13 @@ from factory.fuzzy import (
 )
 from factory import SubFactory
 
-from BinanceAPI.factories.symbol_factory import SymbolFactory
+from BinanceAPI.factories.asset_factory import AssetFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
 from BinanceAPI.models import Candlestick
 
 
 class CandlestickFactory(BaseBinanceFactory):
-    symbol = SubFactory(factory=SymbolFactory)
+    asset = SubFactory(factory=AssetFactory)
     open_time = FuzzyDateTime(
         datetime(2020, 1, 1, tzinfo=UTC),
         datetime(2022, 1, 1, tzinfo=UTC),

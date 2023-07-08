@@ -23,7 +23,7 @@ class Trade(BaseBinanceModel):
         editable=False,
         help_text="ID de la operación",
     )
-    symbol = CharField(
+    asset = CharField(
         max_length=20,
         blank=False,
         null=False,

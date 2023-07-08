@@ -6,12 +6,12 @@ from django.db.models import (
 )
 
 from BinanceAPI.models.base_binance_model import BaseBinanceModel
-from BinanceAPI.models.symbol_model import Symbol
+from BinanceAPI.models.asset_model import Asset
 
 
 class Candlestick(BaseBinanceModel):
-    symbol = ForeignKey(
-        Symbol,
+    asset = ForeignKey(
+        Asset,
         on_delete=CASCADE,
         related_name='candlesticks',
         null=True,
@@ -73,4 +73,4 @@ class Candlestick(BaseBinanceModel):
         db_table = 'candlesticks'
 
     def __str__(self):
-        return f"{self.symbol} - {self.open_time}"
+        return f"{self.asset} - {self.open_time}"

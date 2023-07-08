@@ -9,13 +9,13 @@ from factory.fuzzy import (
 )
 from factory import SubFactory
 
-from BinanceAPI.factories.symbol_factory import SymbolFactory
+from BinanceAPI.factories.asset_factory import AssetFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
 from BinanceAPI.models import OrderBook
 
 
 class OrderBookFactory(BaseBinanceFactory):
-    symbol = SubFactory(SymbolFactory)
+    asset = SubFactory(AssetFactory)
     last_update_id = FuzzyInteger(low=1000).fuzz()
     timestamp = FuzzyDateTime(
         datetime(2020, 1, 1, tzinfo=UTC),

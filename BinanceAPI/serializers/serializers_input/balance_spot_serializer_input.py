@@ -1,21 +1,24 @@
 from rest_framework.serializers import (
     ModelSerializer,
     DecimalField,
-    ChoiceField,
+    PrimaryKeyRelatedField,
+    DateTimeField,
 )
 from BinanceAPI.models import BalanceSpot
 from BinanceAPI.serializers.serializers_input.account_serializer_input import AccountSerializerInput
+from BinanceAPI.serializers.serializers_input.asset_serializer_input import AssetSerializerInput
 
 
 class BalanceSpotSerializerInput(ModelSerializer):
-    account = AccountSerializerInput(
+    account = PrimaryKeyRelatedField(
+        queryset=AccountSerializerInput.Meta.model.objects.all(),
         default=AccountSerializerInput.Meta.model.objects.first(),
-        required=True,
-        many=False
+        required=False,
+        many=False,
     )
-    asset = ChoiceField(
+    asset = PrimaryKeyRelatedField(
+        queryset=AssetSerializerInput.Meta.model.objects.all(),
         required=True,
-        choices=BalanceSpot.ASSET_CHOICES,
         help_text="Activo"
     )
     free = DecimalField(
@@ -42,6 +45,11 @@ class BalanceSpotSerializerInput(ModelSerializer):
         help_text="Cantidad en órdenes abiertas",
         allow_null=True,
         required=False
+    )
+    created_at = DateTimeField(
+        required=False,
+        read_only=True,
+        help_text="Fecha y hora de creación",
     )
 
     class Meta:

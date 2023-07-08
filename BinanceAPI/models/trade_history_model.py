@@ -9,7 +9,7 @@ from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
 
 class TradeHistory(BaseBinanceModel):
-    symbol = CharField(
+    asset = CharField(
         max_length=50,
         blank=False,
         null=False,
@@ -65,4 +65,4 @@ class TradeHistory(BaseBinanceModel):
         verbose_name_plural = "Trade Histories"
 
     def __str__(self):
-        return f"{self.symbol} - {self.timestamp}"
+        return f"{self.asset} - {self.timestamp}"

@@ -1,0 +1,2 @@
+# INPUT TESTS.
+from BinanceAPI.tests.serializers_tests.input_tests.balance_spot_serializer_input_test import BalanceSpotSerializerInputTestCase

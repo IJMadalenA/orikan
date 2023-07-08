@@ -9,13 +9,13 @@ from factory.fuzzy import (
 )
 from factory import SubFactory
 
-from BinanceAPI.factories import SymbolFactory
+from BinanceAPI.factories import AssetFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
 from BinanceAPI.models import TradeHistory
 
 
 class TradeHistoryFactory(BaseBinanceFactory):
-    symbol = SubFactory(SymbolFactory)
+    asset = SubFactory(AssetFactory)
     timestamp = FuzzyDateTime(
         datetime(2020, 1, 1, tzinfo=UTC),
         datetime(2022, 1, 1, tzinfo=UTC),

@@ -4,13 +4,11 @@ from django.test import TestCase
 
 class BaseFactoryTestCase(TestCase):
     factory = None
-    model = None
 
     def test_factory_creation(self):
-        model = self.factory()
-
-        self.assertTrue(model.pk)
-        self.assertTrue(self.factory._meta.model.objects.get(pk=model.pk))
+        model_created = self.factory()
+        self.assertTrue(model_created.pk)
+        self.assertTrue(self.factory._meta.model.objects.get(pk=model_created.pk))
 
     def test_factory_count(self):
         model_count_before = self.factory._meta.model.objects.count()

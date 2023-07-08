@@ -95,32 +95,3 @@ class AccountModelTestCase(BaseModelTestCase):
         self.assertFalse(account.enable_margin)
         self.assertFalse(account.enable_spot_and_margin_trade)
         self.assertEqual(account.trading_authority_expiration_time, 9876543210)
-
-    # def test_fetch_account_data(self):
-    #     model = self._create_model_instance()
-    #     account_data = model.fetch_account_data()
-    #
-    #     self.assertIsInstance(account_data, dict)
-    #     self.assertIn('balances', account_data)
-
-    # def test_save_account_data(self):
-    #     model = self._create_model_instance()
-    #     model.save_account_data()
-    #
-    #     self.assertEqual(model.status, 'ACTIVE')
-    #     self.assertIsNotNone(model.balance)
-    #     self.assertIsNotNone(model.available_balance)
-    #
-    # def test_update_account_data(self):
-    #     model = self._create_model_instance()
-    #     model.update_account_data()
-    #
-    #     self.assertEqual(model.status, 'ACTIVE')
-    #     self.assertIsNotNone(model.balance)
-    #     self.assertIsNotNone(model.available_balance)
-    #
-    # def test_str_method(self):
-    #     model = self._create_model_instance()
-    #
-    #     self.assertEqual(str(model), model.account_id)
-
