@@ -1,13 +1,14 @@
 from django.db.models import (
     CharField,
-    TextField
+    TextField,
+    DecimalField,
+    BooleanField
 )
-
 from BinanceAPI.models.base_binance_model import BaseBinanceModel
 
 
 class Asset(BaseBinanceModel):
-    symbol = CharField(
+    acronym = CharField(
         db_index=True,
         max_length=20,
         unique=True,
@@ -29,16 +30,43 @@ class Asset(BaseBinanceModel):
         editable=True,
         help_text="Descripción del activo.",
     )
-    status = CharField(
-        max_length=10,
+    min_withdraw_amount = DecimalField(
+        max_digits=20,
+        decimal_places=10,
         blank=False,
         null=False,
-        editable=False,
-        help_text="Estado del par de trading",
+        editable=True,
+        help_text="Cantidad mínima para retirar.",
+    )
+    deposit_status = BooleanField(
+        blank=False,
+        null=False,
+        editable=True,
+        help_text="Estado de depósito.",
+    )
+    withdraw_fee = DecimalField(
+        max_digits=20,
+        decimal_places=10,
+        blank=False,
+        null=False,
+        editable=True,
+        help_text="Comisión de retiro.",
+    )
+    withdraw_status = BooleanField(
+        blank=False,
+        null=False,
+        editable=True,
+        help_text="Estado de retiro.",
+    )
+    deposit_tip = TextField(
+        blank=True,
+        null=True,
+        editable=True,
+        help_text="Consejo de depósito.",
     )
 
     class Meta:
         db_table = 'assets'
 
     def __str__(self):
-        return self.symbol
+        return self.acronym

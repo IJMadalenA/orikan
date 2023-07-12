@@ -4,8 +4,8 @@ from django.db.models import (
     ForeignKey,
     PROTECT,
     IntegerField,
+    BooleanField,
 )
-from rest_framework.fields import BooleanField
 
 from BinanceAPI.models.symbol_model import Symbol
 from BinanceAPI.models.base_binance_model import BaseBinanceModel
@@ -36,7 +36,28 @@ SYMBOL_FILTER_TYPE = (
 # https://github.com/binance/binance-spot-api-docs/blob/master/filters.md
 
 
-class PriceFilter(BaseBinanceModel):
+class BaseFilter(BaseBinanceModel):
+    """
+    Base filter model.
+    """
+    symbol = ForeignKey(
+        Symbol,
+        on_delete=PROTECT,
+        blank=False,
+        null=False,
+        editable=False,
+        help_text="Símbolo del par de trading",
+    )
+    filter_type = CharField(
+        choices=SYMBOL_FILTER_TYPE,
+        max_length=35,
+        blank=False,
+        null=False,
+        help_text="Tipo de filtro",
+    )
+
+
+class PriceFilter(BaseFilter):
     """
     The PRICE_FILTER defines the price rules for a symbol. There are 3 parts:
 
@@ -59,22 +80,6 @@ class PriceFilter(BaseBinanceModel):
       "tickSize": "0.00000100"
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     min_price = DecimalField(
         max_digits=20,
         decimal_places=10,
@@ -106,7 +111,7 @@ class PriceFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Precio'
 
 
-class PercentPriceFilter(BaseBinanceModel):
+class PercentPriceFilter(BaseFilter):
     """
     The PERCENT_PRICE filter defines the valid range for the price based on the average of the previous trades. avgPriceMins is the number of minutes the average price is calculated over. 0 means the last price is used.
 
@@ -123,22 +128,6 @@ class PercentPriceFilter(BaseBinanceModel):
       "avgPriceMins": 5
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     multiplier_up = DecimalField(
         max_digits=20,
         decimal_places=10,
@@ -170,7 +159,7 @@ class PercentPriceFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Porcentaje de Precio'
 
 
-class PercentPriceBySideFilter(BaseBinanceModel):
+class PercentPriceBySideFilter(BaseFilter):
     """
     The PERCENT_PRICE_BY_SIDE filter defines the valid range for the price based on the average of the previous trades.
     avgPriceMins is the number of minutes the average price is calculated over. 0 means the last price is used.
@@ -196,22 +185,6 @@ class PercentPriceBySideFilter(BaseBinanceModel):
         "avgPriceMins": 1
       }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     bid_multiplier_up = DecimalField(
         max_digits=20,
         decimal_places=10,
@@ -255,7 +228,7 @@ class PercentPriceBySideFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Porcentaje de Precio'
 
 
-class LotSizeFilter(BaseBinanceModel):
+class LotSizeFilter(BaseFilter):
     """
     The LOT_SIZE filter defines the quantity (aka "lots" in auction terms) rules for a symbol. There are 3 parts:
 
@@ -277,22 +250,6 @@ class LotSizeFilter(BaseBinanceModel):
       "stepSize": "0.00100000"
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     min_qty = DecimalField(
         max_digits=20,
         decimal_places=10,
@@ -324,7 +281,7 @@ class LotSizeFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Tamaño de Lote'
 
 
-class MinNotionalFilter(BaseBinanceModel):
+class MinNotionalFilter(BaseFilter):
     """
     The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol.
     An order's notional value is the `price` * `quantity`.
@@ -341,22 +298,6 @@ class MinNotionalFilter(BaseBinanceModel):
       "avgPriceMins": 5
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     min_notional = DecimalField(
         max_digits=20,
         decimal_places=10,
@@ -367,6 +308,9 @@ class MinNotionalFilter(BaseBinanceModel):
     )
     apply_to_market = BooleanField(
         default=False,
+        blank=False,
+        null=False,
+        editable=False,
         help_text="Aplicar al mercado",
     )
     avg_price_mins = DecimalField(
@@ -384,7 +328,7 @@ class MinNotionalFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Mínimo Notional'
 
 
-class NotionalFilter(BaseBinanceModel):
+class NotionalFilter(BaseFilter):
     """
     The `NOTIONAL` filter defines the allowed range for an order's total value (price * quantity).
     If the order's total value is outside of this range, the `LOT_SIZE` filter will reject the order.
@@ -401,22 +345,6 @@ class NotionalFilter(BaseBinanceModel):
       "avgPriceMins": 5
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     min_notional = DecimalField(
         max_digits=20,
         decimal_places=10,
@@ -427,6 +355,9 @@ class NotionalFilter(BaseBinanceModel):
     )
     apply_min_to_market = BooleanField(
         default=False,
+        blank=False,
+        null=False,
+        editable=False,
         help_text="Aplicar mínimo al mercado",
     )
     max_notional = DecimalField(
@@ -439,6 +370,9 @@ class NotionalFilter(BaseBinanceModel):
     )
     apply_max_to_market = BooleanField(
         default=False,
+        blank=False,
+        null=False,
+        editable=False,
         help_text="Aplicar al mercado",
     )
     avg_price_mins = DecimalField(
@@ -456,7 +390,7 @@ class NotionalFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Notional'
 
 
-class IcebergPartsFilter(BaseBinanceModel):
+class IcebergPartsFilter(BaseFilter):
     """
     The `ICEBERG_PARTS` filter defines the maximum parts an iceberg order can have.
     The number of ICEBERG_PARTS is defined as CEIL(qty / icebergQty).
@@ -468,22 +402,6 @@ class IcebergPartsFilter(BaseBinanceModel):
       "limit": 10
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     limit = IntegerField(
         blank=True,
         null=True,
@@ -497,7 +415,7 @@ class IcebergPartsFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Iceberg Parts'
 
 
-class MarketLotSizeFilter(BaseBinanceModel):
+class MarketLotSizeFilter(BaseFilter):
     """
     The MARKET_LOT_SIZE filter defines the quantity (aka "lots" in auction terms) rules for MARKET orders on a symbol. There are 3 parts:
 
@@ -519,22 +437,6 @@ class MarketLotSizeFilter(BaseBinanceModel):
       "stepSize": "0.00100000"
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     min_qty = DecimalField(
         max_digits=20,
         decimal_places=10,
@@ -566,7 +468,7 @@ class MarketLotSizeFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Market Lot Size'
 
 
-class MaxNumAlgoOrdersFilter(BaseBinanceModel):
+class MaxNumAlgoOrdersFilter(BaseFilter):
     """
     The MAX_NUM_ALGO_ORDERS filter defines the maximum number of "algo" orders an account is allowed to have open on a symbol.
     "Algo" orders are STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT orders.
@@ -577,22 +479,6 @@ class MaxNumAlgoOrdersFilter(BaseBinanceModel):
       "maxNumAlgoOrders": 5
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     max_num_algo_orders = IntegerField(
         blank=True,
         null=True,
@@ -606,7 +492,7 @@ class MaxNumAlgoOrdersFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Máximo Número de Órdenes de Algo'
 
 
-class MaxNumIcebergOrdersFilter(BaseBinanceModel):
+class MaxNumIcebergOrdersFilter(BaseFilter):
     """
     The MAX_NUM_ICEBERG_ORDERS filter defines the maximum number of ICEBERG orders an account is allowed to have open on a symbol.
     An ICEBERG order is any order where the icebergQty is > 0.
@@ -617,22 +503,6 @@ class MaxNumIcebergOrdersFilter(BaseBinanceModel):
       "maxNumIcebergOrders": 5
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     max_num_iceberg_orders = IntegerField(
         blank=True,
         null=True,
@@ -646,7 +516,7 @@ class MaxNumIcebergOrdersFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Máximo Número de Órdenes de Iceberg'
 
 
-class MaxPositionFilter(BaseBinanceModel):
+class MaxPositionFilter(BaseFilter):
     """
     The MAX_POSITION filter defines the allowed maximum position an account can have on the base asset of a symbol. An account's position defined as the sum of the account's:
 
@@ -664,22 +534,6 @@ class MaxPositionFilter(BaseBinanceModel):
       "maxPosition":"10.00000000"
     }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     max_position = DecimalField(
         max_digits=20,
         decimal_places=10,
@@ -695,7 +549,7 @@ class MaxPositionFilter(BaseBinanceModel):
         verbose_name_plural = 'Filtros de Posición Máxima'
 
 
-class TrailingDelta(BaseBinanceModel):
+class TrailingDeltaFilter(BaseFilter):
     """
     The TRAILING_DELTA filter defines the minimum and maximum value for the parameter trailingDelta.
 
@@ -720,22 +574,6 @@ class TrailingDelta(BaseBinanceModel):
           "maxTrailingBelowDelta": 2000
    }
     """
-    symbol = ForeignKey(
-        Symbol,
-        on_delete=PROTECT,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Símbolo del par de trading",
-    )
-    filter_type = CharField(
-        choices=SYMBOL_FILTER_TYPE,
-        max_length=35,
-        blank=False,
-        null=False,
-        editable=False,
-        help_text="Tipo de filtro",
-    )
     min_trailing_above_delta = IntegerField(
         blank=True,
         null=True,

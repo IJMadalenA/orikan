@@ -63,7 +63,7 @@ class Symbol(BaseBinanceModel):
     symbol = CharField(
         # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
         db_index=True,
-        max_length=20,
+        max_length=8,
         unique=True,
         blank=False,
         null=False,

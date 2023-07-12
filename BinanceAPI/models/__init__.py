@@ -16,7 +16,7 @@ from BinanceAPI.models.filters_model import (
     MaxNumAlgoOrdersFilter,
     MaxNumIcebergOrdersFilter,
     MaxPositionFilter,
-    TrailingDelta,
+    TrailingDeltaFilter,
 )
 from BinanceAPI.models.order_book_model import OrderBook
 from BinanceAPI.models.order_model import Order

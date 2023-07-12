@@ -16,7 +16,7 @@ class BaseBinanceModel(Model):
         auto_now=True,
         blank=False,
         null=False,
-        editable=False,
+        editable=True,
         help_text="Fecha y hora de actualización"
     )
     created_at = DateTimeField(
@@ -39,6 +39,3 @@ class BaseBinanceModel(Model):
         secret_api_key = os.environ.get("BINANCE_SECRET_API_KEY", None)
         client = Client(api_key=public_api_key, api_secret=secret_api_key)
         return client
-
-# apps.get_model(BaseBinanceModel, model )
-
