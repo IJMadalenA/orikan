@@ -4,14 +4,24 @@ from rest_framework.serializers import (
     RelatedField,
     PrimaryKeyRelatedField,
     IntegerField,
+    BooleanField
 )
 from BinanceAPI.models import (
     Asset,
     AvgPrice
 )
+from BinanceAPI.serializers.serializers_input.asset_serializer_input import AssetSerializerInput
 
 
 class SymbolSerializerInput(ModelSerializer):
+    symbol = CharField(
+        # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
+        max_length=8,
+        help_text="Trading pair symbol.",
+        required=True,
+        allow_null=False,
+        allow_blank=False,
+    )
     status = CharField(
         # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
         max_length=10,
@@ -20,16 +30,11 @@ class SymbolSerializerInput(ModelSerializer):
         allow_null=True,
         default=None,
     )
-    base_asset = PrimaryKeyRelatedField(
+    base_asset = AssetSerializerInput(
         # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
+        many=False,
         queryset=Asset.objects.all(),
         help_text="Base asset.",
-        required=True,
-    )
-    quote_asset = PrimaryKeyRelatedField(
-        # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
-        queryset=Asset.objects.all(),
-        help_text="Quote asset.",
         required=True,
     )
     base_asset_precision = CharField(
@@ -40,7 +45,14 @@ class SymbolSerializerInput(ModelSerializer):
         allow_null=True,
         default=None,
     )
-    quote_precision = IntegerField(
+    quote_asset = AssetSerializerInput(
+        # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
+        many=False,
+        queryset=Asset.objects.all(),
+        help_text="Quote asset.",
+        required=True,
+    )
+    quote_asset_precision = IntegerField(
         # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
         help_text="Quote precision.",
         required=False,
@@ -54,6 +66,13 @@ class SymbolSerializerInput(ModelSerializer):
         allow_null=True,
         default=None,
         help_text="Average price.",
+    )
+    iceberg_allowed = BooleanField(
+        # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
+        help_text="Iceberg orders allowed.",
+        required=False,
+        allow_null=True,
+        default=None,
     )
 
     class Meta:

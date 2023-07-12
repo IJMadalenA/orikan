@@ -3,7 +3,7 @@ from rest_framework.serializers import (
     DecimalField,
     BooleanField,
     ChoiceField,
-    IntegerField,
+    IntegerField
 )
 from BinanceAPI.models import Account
 
@@ -90,6 +90,9 @@ class AccountSerializerInput(ModelSerializer):
         help_text="Expiration time for trading authority.",
         required=False
     )
+
+    def __str__(self):
+        return self.status
 
     class Meta:
         model = Account

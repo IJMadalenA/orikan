@@ -1,24 +1,15 @@
-from rest_framework.serializers import (
-    ModelSerializer,
-    DecimalField,
-    PrimaryKeyRelatedField,
-    DateTimeField,
-)
+from django.utils import timezone
+from rest_framework.exceptions import ValidationError
+from rest_framework.serializers import DecimalField
 from BinanceAPI.models import BalanceSpot
-from BinanceAPI.serializers.serializers_input.account_serializer_input import AccountSerializerInput
 from BinanceAPI.serializers.serializers_input.asset_serializer_input import AssetSerializerInput
+from BinanceAPI.serializers.serializers_input.base_binance_serializer_input import BaseBinanceSerializerInput
 
 
-class BalanceSpotSerializerInput(ModelSerializer):
-    account = PrimaryKeyRelatedField(
-        queryset=AccountSerializerInput.Meta.model.objects.all(),
-        default=AccountSerializerInput.Meta.model.objects.first(),
-        required=False,
-        many=False,
-    )
-    asset = PrimaryKeyRelatedField(
-        queryset=AssetSerializerInput.Meta.model.objects.all(),
+class BalanceSpotSerializerInput(BaseBinanceSerializerInput):
+    asset = AssetSerializerInput(
         required=True,
+        many=False,
         help_text="Activo"
     )
     free = DecimalField(
@@ -46,20 +37,68 @@ class BalanceSpotSerializerInput(ModelSerializer):
         allow_null=True,
         required=False
     )
-    created_at = DateTimeField(
-        required=False,
-        read_only=True,
-        help_text="Fecha y hora de creación",
-    )
 
     class Meta:
         model = BalanceSpot
-        fields = [
-            'account',
+        fields = BaseBinanceSerializerInput.Meta.fields + [
             'asset',
             'free',
             'locked',
             'total',
             'in_order',
-            'created_at',
         ]
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        if 'free' in attrs and 'locked' in attrs and 'total' in attrs:
+            if attrs['total'] != attrs['free'] + attrs['locked']:
+                raise ValidationError("Total must be equal to the sum of free and locked.")
+        return attrs
+
+    def create(self, validated_data):
+        asset_data = validated_data.pop('asset')
+
+        # Validate if asset exists. If exists, update it. If not, create it.
+        try:
+            asset_acronym = asset_data.get('acronym', None)
+
+            if AssetSerializerInput.Meta.model.objects.filter(acronym=asset_acronym).exists():
+                # Update existing asset.
+                asset = AssetSerializerInput.Meta.model.objects.get(acronym=asset_acronym)
+                asset.updated_at = timezone.now()
+                asset_serializer = AssetSerializerInput(asset, data=asset_data)
+            else:
+                # Create new asset.
+                asset_serializer = AssetSerializerInput(data=asset_data)
+
+            asset_serializer.is_valid(raise_exception=True)
+            asset = asset_serializer.save()
+
+            validated_data['asset'] = asset
+            return super().create(validated_data)
+        except Exception as e:
+            raise ValidationError("Failed to create balance spot: " + str(e))
+
+    def update(self, instance, validated_data):
+        asset_data = validated_data.pop('asset', None)
+
+        # Validate if asset exists. If exists, update it. If not, create it.
+        try:
+            asset_acronym = asset_data.get('acronym', None)
+
+            if AssetSerializerInput.Meta.model.objects.filter(acronym=asset_acronym).exists():
+                # Update existing asset.
+                asset = AssetSerializerInput.Meta.model.objects.get(acronym=asset_acronym)
+                asset.updated_at = timezone.now()
+                asset_serializer = AssetSerializerInput(asset, data=asset_data)
+            else:
+                # Create new asset.
+                asset_serializer = AssetSerializerInput(data=asset_data)
+
+            asset_serializer.is_valid(raise_exception=True)
+            asset = asset_serializer.save()
+
+            validated_data['asset'] = asset
+            return super().update(instance, validated_data)
+        except Exception as e:
+            raise ValidationError("Failed to update balance spot: " + str(e))

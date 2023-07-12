@@ -1,112 +1,99 @@
+from rest_framework.exceptions import ValidationError
+from rest_framework.fields import DecimalField
 from rest_framework.serializers import (
-    ModelSerializer,
     CharField,
-    DecimalField,
     BooleanField,
-    RelatedField,
 )
-from BinanceAPI.models import (
-    Asset,
-    AvgPrice
-)
+from BinanceAPI.models import Asset
+from BinanceAPI.serializers.serializers_input.base_binance_serializer_input import BaseBinanceSerializerInput
 
 
-class AssetSerializerInput(ModelSerializer):
-    symbol = CharField(
+class AssetSerializerInput(BaseBinanceSerializerInput):
+    acronym = CharField(
         max_length=10,
         help_text="Asset symbol.",
-        required=True
+        required=True,
+        allow_null=False,
+        allow_blank=False,
     )
     name = CharField(
         max_length=100,
         help_text="Asset name.",
-        required=True
+        required=False,
+        allow_null=True,
+        allow_blank=True,
     )
     description = CharField(
-        max_length=100,
+        max_length=20_000,
         help_text="Asset description.",
-        required=True
-    )
-    price = DecimalField(
-        # get_symbol_ticker(**params) -> dict
-        # https://python-binance.readthedocs.io/en/latest/binance.html?highlight=get_account_snapshot#binance.client.AsyncClient.get_symbol_ticker
-        max_digits=20,
-        decimal_places=10,
-        help_text="Asset price.",
-        required=True
-    )
-    base_asset_precision = CharField(
-        max_length=10,
-        help_text="Base asset precision.",
         required=False,
         allow_null=True,
-        default=None,
-    )
-    quote_asset_precision = CharField(
-        max_length=10,
-        help_text="Quote asset precision.",
-        required=False,
-        allow_null=True,
-        default=None,
+        allow_blank=True,
     )
     min_withdraw_amount = DecimalField(
-        # https://python-binance.readthedocs.io/en/latest/binance.html?highlight=get_account_snapshot#binance.client.Client.get_asset_details
         max_digits=20,
         decimal_places=10,
-        help_text="Minimum withdrawal amount.",
-        required=False,
-        allow_null=True,
-        default=None,
+        help_text="Minimum withdraw amount.",
+        required=True,
+        allow_null=False,
     )
     deposit_status = BooleanField(
-        # https://python-binance.readthedocs.io/en/latest/binance.html?highlight=get_account_snapshot#binance.client.Client.get_asset_details
         help_text="Deposit status.",
-        required=False,
-        allow_null=True,
-        default=None,
+        required=True,
+        allow_null=False,
     )
     withdraw_fee = DecimalField(
-        # https://python-binance.readthedocs.io/en/latest/binance.html?highlight=get_account_snapshot#binance.client.Client.get_asset_details
         max_digits=20,
         decimal_places=10,
         help_text="Withdraw fee.",
-        required=False,
-        allow_null=True,
-        default=None,
+        required=True,
+        allow_null=False,
     )
     withdraw_status = BooleanField(
-        # https://python-binance.readthedocs.io/en/latest/binance.html?highlight=get_account_snapshot#binance.client.Client.get_asset_details
         help_text="Withdraw status.",
-        required=False,
-        allow_null=True,
-        default=None,
+        required=True,
+        allow_null=False,
     )
     deposit_tip = CharField(
-        # https://python-binance.readthedocs.io/en/latest/binance.html?highlight=get_account_snapshot#binance.client.Client.get_asset_details
-        max_length=100,
+        max_length=20_000,
         help_text="Deposit tip.",
         required=False,
         allow_null=True,
-        default=None,
-    )
-    avg_price = RelatedField(
-        # https://python-binance.readthedocs.io/en/latest/binance.html?highlight=get_account_snapshot#binance.client.Client.get_avg_price
-        queryset=AvgPrice.objects.all(),
-        required=False,
-        allow_null=True,
-        default=None,
-        help_text="Average price.",
+        allow_blank=True,
     )
 
     class Meta:
         model = Asset
-        fields = [
-            'symbol',
+        # inherit from BaseBinanceSerializerInput and add the fields from this serializer
+        fields = BaseBinanceSerializerInput.Meta.fields + [
+            'acronym',
             'name',
             'description',
-            'base_asset',
-            'quote_asset',
-            'status',
-            'base_asset_precision',
-            'quote_asset_precision',
+            'min_withdraw_amount',
+            'deposit_status',
+            'withdraw_fee',
+            'withdraw_status',
+            'deposit_tip',
         ]
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        if 'withdraw_fee' in attrs and 'min_withdraw_amount' in attrs:
+            if attrs['withdraw_fee'] > attrs['min_withdraw_amount']:
+                raise ValidationError("Withdraw fee must be less than minimum withdraw amount.")
+        return attrs
+
+    def create(self, validated_data):
+        return Asset.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.acronym = validated_data.get('acronym', instance.acronym)
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get('description', instance.description)
+        instance.min_withdraw_amount = validated_data.get('min_withdraw_amount', instance.min_withdraw_amount)
+        instance.deposit_status = validated_data.get('deposit_status', instance.deposit_status)
+        instance.withdraw_fee = validated_data.get('withdraw_fee', instance.withdraw_fee)
+        instance.withdraw_status = validated_data.get('withdraw_status', instance.withdraw_status)
+        instance.deposit_tip = validated_data.get('deposit_tip', instance.deposit_tip)
+        instance.save()
+        return instance
