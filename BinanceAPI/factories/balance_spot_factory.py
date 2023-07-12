@@ -12,7 +12,6 @@ from BinanceAPI.models.balance_spot_model import BalanceSpot
 
 
 class BalanceSpotFactory(BaseBinanceFactory):
-    account = SubFactory(AccountFactory)
     asset = SubFactory(AssetFactory)
     free = FuzzyDecimal(low=1.000).fuzz()
     locked = FuzzyDecimal(low=1.000).fuzz()

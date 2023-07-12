@@ -6,6 +6,21 @@ from BinanceAPI.factories.avg_price_factory import AvgPriceFactory
 from BinanceAPI.factories.balance_spot_factory import BalanceSpotFactory
 from BinanceAPI.factories.candlestick_factory import CandlestickFactory
 from BinanceAPI.factories.deposit_factory import DepositFactory
+from BinanceAPI.factories.filters_factory import (
+    FilterFactory,
+    PriceFilterFactory,
+    PercentPriceFilterFactory,
+    PercentPriceBySideFilterFactory,
+    LotSizeFilterFactory,
+    MinNotionalFilterFactory,
+    NotionalFilterFactory,
+    IcebergPartsFilterFactory,
+    MarketLotSizeFilterFactory,
+    MaxNumAlgoOrdersFilterFactory,
+    MaxNumIcebergOrdersFilterFactory,
+    MaxPositionFilterFactory,
+    TrailingDeltaFactory,
+)
 from BinanceAPI.factories.order_book_factory import OrderBookFactory
 from BinanceAPI.factories.order_factory import OrderFactory
 from BinanceAPI.factories.price_history_factory import PriceHistoryFactory
