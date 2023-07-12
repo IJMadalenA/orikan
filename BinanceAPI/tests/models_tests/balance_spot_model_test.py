@@ -1,7 +1,9 @@
-from rest_framework.exceptions import ValidationError
+from unittest.mock import patch
 
-from BinanceAPI.factories import BalanceSpotFactory
-from BinanceAPI.models import BalanceSpot
+from binance.exceptions import BinanceAPIException
+
+from BinanceAPI.factories import BalanceSpotFactory, AssetFactory
+from BinanceAPI.models import BalanceSpot, Asset
 from BinanceAPI.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
 from BinanceAPI.tests.models_tests.base_binance_model_test import BaseModelTestCase
 from decimal import Decimal
@@ -20,20 +22,23 @@ class BalanceSpotModelTestCase(BaseModelTestCase):
             'in_order': Decimal('0.12345678'),
         }
 
-    def test_create_balance_spot_invalid_account(self):
-        self.balance_spot_data['account'] = 999  # ID de cuenta no existente
-        serializer = BalanceSpotSerializerInput(data=self.balance_spot_data)
-        with self.assertRaises(ValidationError):
-            serializer.is_valid(raise_exception=True)
-
     def test_update_balance_spot(self):
         balance_spot = BalanceSpotFactory()
+        asset = AssetFactory()
         updated_data = {
-            'account': balance_spot.account_id,
-            'asset': balance_spot.asset.id,
+            'asset': {
+                "acronym": asset.acronym,
+                "name": "Bitcoin",
+                "description": "Bitcoin is a cryptocurrency. It is a decentralized digital currency without a central bank or single administrator that can be sent from user to user on the peer-to-peer bitcoin network without the need for intermediaries.",
+                "min_withdraw_amount": "0.002",
+                "deposit_status": True,
+                "withdraw_fee": "0.0005",
+                "withdraw_status": True,
+                "deposit_tip": "Some deposit tip",
+            },
             'free': Decimal('2.34567890'),
             'locked': Decimal('1.87654321'),
-            'total': Decimal('4.22222222'),
+            'total': Decimal('2.34567890') + Decimal('1.87654321'),
             'in_order': Decimal('0.98765432'),
         }
         serializer = BalanceSpotSerializerInput(data=updated_data, instance=balance_spot)
@@ -43,19 +48,5 @@ class BalanceSpotModelTestCase(BaseModelTestCase):
         self.assertEqual(balance_spot.asset, balance_spot.asset)
         self.assertEqual(balance_spot.free, Decimal('2.34567890'))
         self.assertEqual(balance_spot.locked, Decimal('1.87654321'))
-        self.assertEqual(balance_spot.total, Decimal('4.22222222'))
+        self.assertEqual(balance_spot.total, Decimal('2.34567890') + Decimal('1.87654321'))
         self.assertEqual(balance_spot.in_order, Decimal('0.98765432'))
-
-    def test_update_balance_spot_invalid_account(self):
-        balance_spot = BalanceSpotFactory()
-        updated_data = {
-            'account': 999,  # ID de cuenta no existente
-            'asset': 'ETH',
-            'free': Decimal('2.34567890'),
-            'locked': Decimal('1.87654321'),
-            'total': Decimal('4.22222222'),
-            'in_order': Decimal('0.98765432'),
-        }
-        serializer = BalanceSpotSerializerInput(data=updated_data, instance=balance_spot)
-        with self.assertRaises(ValidationError):
-            serializer.is_valid(raise_exception=True)
