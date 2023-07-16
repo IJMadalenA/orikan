@@ -20,8 +20,8 @@ from BinanceAPI.models.filters_model import (
 )
 from BinanceAPI.models.order_book_model import OrderBook
 from BinanceAPI.models.order_model import Order
-from BinanceAPI.models.price_history_model import PriceHistory
 from BinanceAPI.models.symbol_model import Symbol
+from BinanceAPI.models.ticker_model import Ticker
 from BinanceAPI.models.trade_model import Trade
 from BinanceAPI.models.trade_history_model import TradeHistory
 from BinanceAPI.models.wallet_model import Wallet

@@ -12,53 +12,8 @@ from BinanceAPI.models.asset_model import Asset
 
 class Symbol(BaseBinanceModel):
     """
-    Este modelo se rellena casi en su totalidad a traves
-    del método `get_symbol_info()`.
-
-    Ejemplo de respuesta:
-    {
-        'symbol': 'ETHBTC',
-        'status': 'TRADING',
-        'baseAsset': 'ETH',
-        'baseAssetPrecision': 8,
-        'quoteAsset': 'BTC',
-        'quotePrecision': 8,
-        'quoteAssetPrecision': 8,
-        'baseCommissionPrecision': 8,
-        'quoteCommissionPrecision': 8,
-        'orderTypes': [
-            'LIMIT',
-            'LIMIT_MAKER',
-            'MARKET',
-            'STOP_LOSS_LIMIT',
-            'TAKE_PROFIT_LIMIT'
-        ],
-        'icebergAllowed': True,
-        'ocoAllowed': True,
-        'quoteOrderQtyMarketAllowed': True,
-        'isSpotTradingAllowed': True,
-        'isMarginTradingAllowed': True,
-        'filters': [
-            {
-                'filterType': 'PRICE_FILTER',
-                'minPrice': '0.00000100',
-                'maxPrice': '922327.00000000',
-                'tickSize': '0.00000100'
-            },
-            {
-                'filterType': 'PERCENT_PRICE',
-                'multiplierUp': '5',
-                'multiplierDown': '0.2',
-                'avgPriceMins': 5
-            },
-            ...
-        ],
-        'permissions': [
-            'SPOT',
-            'MARGIN'
-        ]
-    }
-
+    Este modelo se rellena con w¡el método get_symbol_info() de la API de Binance.
+    Su función es almacenar la información de los pares de trading.
     """
     symbol = CharField(
         # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
@@ -130,9 +85,47 @@ class Symbol(BaseBinanceModel):
         help_text="Permite ordenes iceberg",
     )
 
-
     class Meta:
         db_table = 'symbols'
 
     def __str__(self):
         return self.symbol
+
+    @classmethod
+    def load_symbol_data(cls):
+        from BinanceAPI.serializers.serializers_input.symbol_serializer_input import SymbolSerializerInput
+        try:
+            symbols_info = cls.__api__().get_all_tickers()
+
+            symbol_data_list = []
+            for symbol_info in symbols_info:
+                symbol = symbol_info['symbol']
+                status = 'TRADING'
+                base_asset_acronym = symbol[:-3]
+                quote_asset_acronym = symbol[-3:]
+                base_asset = Asset.objects.get(acronym=base_asset_acronym)
+                quote_asset = Asset.objects.get(acronym=quote_asset_acronym)
+                base_asset_precision = base_asset.precision
+                quote_asset_precision = quote_asset.precision
+                order_types = ["LIMIT", "MARKET"]
+                iceberg_allowed = False
+
+                symbol_data = {
+                    'symbol': symbol,
+                    'status': status,
+                    'base_asset': base_asset,
+                    'base_asset_precision': base_asset_precision,
+                    'quote_asset': quote_asset,
+                    'quote_asset_precision': quote_asset_precision,
+                    'order_types': order_types,
+                    'iceberg_allowed': iceberg_allowed,
+                }
+                symbol_data_list.append(symbol_data)
+
+            serializer = SymbolSerializerInput(data=symbol_data_list, many=True)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                print(serializer.errors)
+        except Exception as e:
+            print(f"Error al cargar los símbolos desde Binance: {str(e)}")

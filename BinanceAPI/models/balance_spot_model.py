@@ -116,7 +116,24 @@ class BalanceSpot(BaseBinanceModel):
             logging.error(f"Error al actualizar los balances de Binance: {str(e)}")
 
     class Meta:
-        db_table = 'balances'
+        verbose_name = "Balance Spot"
+        verbose_name_plural = "Balances Spot"
 
     def __str__(self):
         return f"{self.asset}: Free: {self.free}, Locked: {self.locked}, Total: {self.total}"
+
+    def save(
+            self,
+            force_insert=False,
+            force_update=False,
+            using=None,
+            update_fields=None
+    ):
+        # Validar que la suma de free y locked sea igual a total
+        self.total = float(self.free) + float(self.locked)
+
+        # Validar que el campo free y locked sean mayores a 0. Si no lo son, se retorna un error.
+        if self.free < 0 or self.locked < 0:
+            raise ValueError("Los campos free y locked no pueden ser menores a 0.")
+
+        super().save(force_insert, force_update, using, update_fields)
