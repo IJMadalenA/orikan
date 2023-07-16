@@ -2,7 +2,6 @@ from rest_framework.serializers import (
     ModelSerializer,
     CharField,
     RelatedField,
-    PrimaryKeyRelatedField,
     IntegerField,
     BooleanField
 )
@@ -33,7 +32,6 @@ class SymbolSerializerInput(ModelSerializer):
     base_asset = AssetSerializerInput(
         # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
         many=False,
-        queryset=Asset.objects.all(),
         help_text="Base asset.",
         required=True,
     )
@@ -48,7 +46,6 @@ class SymbolSerializerInput(ModelSerializer):
     quote_asset = AssetSerializerInput(
         # get_symbol_info(symbol) → Optional[Dict[KT, VT]]
         many=False,
-        queryset=Asset.objects.all(),
         help_text="Quote asset.",
         required=True,
     )

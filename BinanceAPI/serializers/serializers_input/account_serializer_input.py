@@ -9,6 +9,36 @@ from BinanceAPI.models import Account
 
 
 class AccountSerializerInput(ModelSerializer):
+    """
+    Main functionalities:
+    The AccountSerializerInput class is a serializer that defines the input fields for the Account model.
+    It inherits from the ModelSerializer class and specifies the fields that can be used to create or update an Account object.
+    The class provides validation for the input data and maps it to the corresponding fields of the Account model.
+
+    Methods:
+    - __str__(): This method returns a string representation of the serializer object. It returns the status field of the serializer.
+    - Meta: This inner class defines the metadata for the serializer, such as the model it is based on and the fields it should serialize.
+
+     Fields:
+    - status: A ChoiceField that represents the status of the account.
+    - maker_commission: A DecimalField that represents the commission rate for makers.
+    - taker_commission: A DecimalField that represents the commission rate for takers.
+    - buyer_commission: A DecimalField that represents the commission rate for buyers.
+    - seller_commission: A DecimalField that represents the commission rate for sellers.
+    - can_trade: A BooleanField that indicates whether trading is allowed.
+    - can_withdraw: A BooleanField that indicates whether withdrawals are allowed.
+    - can_deposit: A BooleanField that indicates whether deposits are allowed.
+    - ip_restrict: A BooleanField that indicates whether IP restrictions are enabled.
+    - enable_withdrawals: A BooleanField that indicates whether withdrawals are enabled.
+    - enable_internal_transfer: A BooleanField that indicates whether internal transfers are enabled.
+    - permits_universal_transfer: A BooleanField that indicates whether universal transfers are permitted.
+    - enable_vanilla_options: A BooleanField that indicates whether vanilla options are enabled.
+    - enable_reading: A BooleanField that indicates whether reading is enabled.
+    - enable_futures: A BooleanField that indicates whether futures trading is enabled.
+    - enable_margin: A BooleanField that indicates whether margin trading is enabled.
+    - enable_spot_and_margin_trade: A BooleanField that indicates whether spot and margin trading is enabled.
+    - trading_authority_expiration_time: An IntegerField that represents the expiration time for trading authority.
+    """
     status = ChoiceField(
         choices=Account.STATUS_CHOICES,
         help_text="Account status.",
@@ -92,7 +122,7 @@ class AccountSerializerInput(ModelSerializer):
     )
 
     def __str__(self):
-        return self.status
+        return f"Account: {self.status}, {self.name}, {self.id}"
 
     class Meta:
         model = Account
