@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Path: BinanceAPI/admin/balance_spot_admin.py
+
 import logging
 
 from django.contrib import admin

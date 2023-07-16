@@ -1,3 +1,8 @@
+#!/usr/bin/env python#!/usr/bin/env python
+
+# -*- coding: utf-8 -*-
+# Path: BinanceAPI/admin/asset_admin.py
+
 import logging
 
 from django.contrib import admin
