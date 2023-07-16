@@ -14,13 +14,13 @@ from BinanceAPI.models import Symbol
 
 class SymbolFactory(BaseBinanceFactory):
     symbol = LazyAttribute(lambda obj: BaseBinanceFactory.generate_unique_id())
-    status = FuzzyText(length=10).fuzz()
+    status = FuzzyText(length=10)
     base_asset = SubFactory(AssetFactory)
-    base_asset_precision = FuzzyInteger(0, 10).fuzz()
+    base_asset_precision = FuzzyInteger(0, 10)
     quote_asset = SubFactory(AssetFactory)
-    quote_asset_precision = FuzzyInteger(0, 10).fuzz()
-    order_types = FuzzyText(length=10).fuzz()
-    iceberg_allowed = FuzzyChoice([True, False]).fuzz()
+    quote_asset_precision = FuzzyInteger(0, 10)
+    order_types = FuzzyText(length=10)
+    iceberg_allowed = FuzzyChoice([True, False])
 
     class Meta:
         model = Symbol
