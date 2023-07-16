@@ -1,7 +1,3 @@
-from unittest.mock import patch
-
-from binance.exceptions import BinanceAPIException
-
 from BinanceAPI.factories import BalanceSpotFactory, AssetFactory
 from BinanceAPI.models import BalanceSpot, Asset
 from BinanceAPI.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
@@ -48,5 +44,5 @@ class BalanceSpotModelTestCase(BaseModelTestCase):
         self.assertEqual(balance_spot.asset, balance_spot.asset)
         self.assertEqual(balance_spot.free, Decimal('2.34567890'))
         self.assertEqual(balance_spot.locked, Decimal('1.87654321'))
-        self.assertEqual(balance_spot.total, Decimal('2.34567890') + Decimal('1.87654321'))
+        self.assertAlmostEqual(Decimal(balance_spot.total), Decimal('2.34567890') + Decimal('1.87654321'))
         self.assertEqual(balance_spot.in_order, Decimal('0.98765432'))
