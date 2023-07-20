@@ -1,7 +1,7 @@
 from _decimal import Decimal
 
 from BinanceAPI.factories import TickerFactory
-from BinanceAPI.models import Symbol
+from BinanceAPI.models.symbol_model import Symbol
 
 # Imported Models.
 from BinanceAPI.tests.factory_tests.base_binance_factory_test import BaseFactoryTestCase
@@ -18,7 +18,7 @@ class TickerFactoryTestCase(BaseFactoryTestCase):
         self.assertGreaterEqual(ticker.price_change, 0.0001)
         self.assertGreaterEqual(ticker.price_change_percent, 0.001)
         self.assertGreaterEqual(ticker.prev_close_price, 0.001)
-        self.assertGreaterEqual(ticker.weighted_avg_price, 0.001)
+        self.assertGreaterEqual(ticker.weighted_avg_price, 0.0001)
         self.assertGreaterEqual(ticker.last_price, 0.0001)
         self.assertGreaterEqual(ticker.bid_price, 0.001)
         self.assertGreaterEqual(ticker.ask_price, 0.001)

@@ -18,6 +18,7 @@ from BinanceAPI.tests.factory_tests.filters_factory_test import (
     MaxPositionFilterFactoryTestCase,
     TrailingDeltaFactoryTestCase,
 )
+from BinanceAPI.tests.factory_tests.network_factory_test import NetworkFactoryTestCase
 from BinanceAPI.tests.factory_tests.order_factory_test import OrderFactoryTestCase
 from BinanceAPI.tests.factory_tests.asset_factory_test import AssetFactoryTestCase
 from BinanceAPI.tests.factory_tests.ticker_factory_test import TickerFactoryTestCase

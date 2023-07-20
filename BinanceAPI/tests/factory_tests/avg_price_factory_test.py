@@ -2,8 +2,8 @@ from _decimal import Decimal
 
 from factory.fuzzy import FuzzyText
 
-from BinanceAPI.factories import AvgPriceFactory
-from BinanceAPI.models import Symbol
+from BinanceAPI.factories.avg_price_factory import AvgPriceFactory
+from BinanceAPI.models.symbol_model import Symbol
 
 # Imported Models.
 from BinanceAPI.tests.factory_tests.base_binance_factory_test import BaseFactoryTestCase

@@ -1,5 +1,7 @@
 from BinanceAPI.factories import AssetFactory
 
+from django.db.utils import IntegrityError
+
 # Imported Models.
 from BinanceAPI.tests.factory_tests.base_binance_factory_test import BaseFactoryTestCase
 
@@ -72,9 +74,7 @@ class TestAssetFactory(unittest.TestCase):
         self.assertEqual(asset.min_withdraw_amount, 0.0001)
         self.assertEqual(asset.withdraw_fee, 0.001)
 
-    #  Tests that the AssetFactory can create instances of Asset with null and blank fields
+    #  Tests that the AssetFactory can not create instances of Asset with null and blank fields
     def test_create_asset_instance_with_null_and_blank_fields(self):
-        asset = AssetFactory(name=None, description='', deposit_tip=None)
-        self.assertIsNone(asset.name)
-        self.assertEqual(asset.description, '')
-        self.assertIsNone(asset.deposit_tip)
+        with self.assertRaises(IntegrityError):
+            AssetFactory(acronym=None, name='', min_withdraw_amount=None, withdraw_fee=None)
