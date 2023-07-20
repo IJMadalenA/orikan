@@ -1,4 +1,4 @@
-from BinanceAPI.models import Account as ModelImported, Account
+from BinanceAPI.models.account_model import Account as ModelImported, Account
 from BinanceAPI.factories import AccountFactory as FactoryImported
 from BinanceAPI.serializers.serializers_input.account_serializer_input import AccountSerializerInput
 from BinanceAPI.tests.models_tests.base_binance_model_test import BaseModelTestCase

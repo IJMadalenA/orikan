@@ -1,5 +1,7 @@
+from factory import SubFactory
+
 from BinanceAPI.factories import BalanceSpotFactory, AssetFactory
-from BinanceAPI.models import BalanceSpot, Asset
+from BinanceAPI.models.balance_spot_model import BalanceSpot
 from BinanceAPI.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
 from BinanceAPI.tests.models_tests.base_binance_model_test import BaseModelTestCase
 from decimal import Decimal
@@ -11,7 +13,7 @@ class BalanceSpotModelTestCase(BaseModelTestCase):
 
     def setUp(self):
         self.balance_spot_data = {
-            'asset': 'BTC',
+            'asset': AssetFactory().pk,
             'free': Decimal('1.23456789'),
             'locked': Decimal('0.98765432'),
             'total': Decimal('2.22222222'),
@@ -22,16 +24,7 @@ class BalanceSpotModelTestCase(BaseModelTestCase):
         balance_spot = BalanceSpotFactory()
         asset = AssetFactory()
         updated_data = {
-            'asset': {
-                "acronym": asset.acronym,
-                "name": "Bitcoin",
-                "description": "Bitcoin is a cryptocurrency. It is a decentralized digital currency without a central bank or single administrator that can be sent from user to user on the peer-to-peer bitcoin network without the need for intermediaries.",
-                "min_withdraw_amount": "0.002",
-                "deposit_status": True,
-                "withdraw_fee": "0.0005",
-                "withdraw_status": True,
-                "deposit_tip": "Some deposit tip",
-            },
+            'asset': AssetFactory().pk,
             'free': Decimal('2.34567890'),
             'locked': Decimal('1.87654321'),
             'total': Decimal('2.34567890') + Decimal('1.87654321'),
