@@ -12,7 +12,7 @@ from factory.fuzzy import (
 from factory import LazyAttribute
 
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
-from BinanceAPI.models import Deposit
+from BinanceAPI.models.deposit_model import Deposit
 
 
 class DepositFactory(BaseBinanceFactory):

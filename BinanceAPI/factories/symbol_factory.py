@@ -9,7 +9,7 @@ from BinanceAPI.factories import (
     BaseBinanceFactory,
     AssetFactory
 )
-from BinanceAPI.models import Symbol
+from BinanceAPI.models.symbol_model import Symbol
 
 
 class SymbolFactory(BaseBinanceFactory):

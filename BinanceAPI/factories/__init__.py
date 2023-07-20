@@ -21,6 +21,7 @@ from BinanceAPI.factories.filters_factory import (
     MaxPositionFilterFactory,
     TrailingDeltaFactory,
 )
+from BinanceAPI.factories.network_factory import NetworkFactory
 from BinanceAPI.factories.order_book_factory import OrderBookFactory
 from BinanceAPI.factories.order_factory import OrderFactory
 from BinanceAPI.factories.symbol_factory import SymbolFactory

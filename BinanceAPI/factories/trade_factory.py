@@ -15,7 +15,7 @@ from factory import (
 )
 from BinanceAPI.factories import AssetFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
-from BinanceAPI.models import Trade
+from BinanceAPI.models.trade_model import Trade
 
 
 class TradeFactory(BaseBinanceFactory):

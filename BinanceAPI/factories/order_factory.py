@@ -7,7 +7,7 @@ from factory import SubFactory
 
 from BinanceAPI.factories.asset_factory import AssetFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
-from BinanceAPI.models import Order
+from BinanceAPI.models.order_model import Order
 
 
 class OrderFactory(BaseBinanceFactory):

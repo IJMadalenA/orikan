@@ -1,7 +1,7 @@
 from factory import Faker, fuzzy
 
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
-from BinanceAPI.models import Account
+from BinanceAPI.models.account_model import Account
 
 
 class AccountFactory(BaseBinanceFactory):

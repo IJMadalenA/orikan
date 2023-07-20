@@ -8,7 +8,7 @@ from factory.fuzzy import (
 )
 
 from BinanceAPI.factories.symbol_factory import SymbolFactory
-from BinanceAPI.models import (
+from BinanceAPI.models.filters_model import (
     PriceFilter,
     PercentPriceFilter,
     PercentPriceBySideFilter,

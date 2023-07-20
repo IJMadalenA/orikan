@@ -1,8 +1,8 @@
 from factory.fuzzy import FuzzyDecimal
 from factory import Faker, LazyAttribute
 
-from BinanceAPI.factories import BaseBinanceFactory
-from BinanceAPI.models import Asset
+from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
+from BinanceAPI.models.asset_model import Asset
 
 
 class AssetFactory(BaseBinanceFactory):
@@ -33,6 +33,17 @@ class AssetFactory(BaseBinanceFactory):
     withdraw_fee = FuzzyDecimal(0.0000000001, 1000000000).fuzz()
     withdraw_status = Faker('pybool')
     deposit_tip = Faker('text')
+    deposit_all_enable = Faker('pybool')
+    withdraw_all_enable = Faker('pybool')
+    free = FuzzyDecimal(0.0000000001, 1000000000).fuzz()
+    locked = FuzzyDecimal(0.0000000001, 1000000000).fuzz()
+    freeze = FuzzyDecimal(0.0000000001, 1000000000).fuzz()
+    withdrawing = FuzzyDecimal(0.0000000001, 1000000000).fuzz()
+    ipoing = FuzzyDecimal(0.0000000001, 1000000000).fuzz()
+    ipoable = FuzzyDecimal(0.0000000001, 1000000000).fuzz()
+    storage = FuzzyDecimal(0.0000000001, 1000000000).fuzz()
+    is_legal_money = Faker('pybool')
+    trading = Faker('pybool')
 
     class Meta:
         model = Asset

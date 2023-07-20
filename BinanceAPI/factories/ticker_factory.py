@@ -9,7 +9,7 @@ from factory.fuzzy import (
 
 from BinanceAPI.factories import SymbolFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
-from BinanceAPI.models import Ticker
+from BinanceAPI.models.ticker_model import Ticker
 
 
 class TickerFactory(BaseBinanceFactory):

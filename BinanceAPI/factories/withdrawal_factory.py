@@ -10,7 +10,7 @@ from factory.fuzzy import (
     FuzzyText,
 )
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
-from BinanceAPI.models import Withdrawal
+from BinanceAPI.models.withdrawal_model import Withdrawal
 
 
 class WithdrawalFactory(BaseBinanceFactory):

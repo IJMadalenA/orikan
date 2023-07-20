@@ -11,7 +11,7 @@ from factory import SubFactory
 
 from BinanceAPI.factories import AssetFactory
 from BinanceAPI.factories.base_binance_factory import BaseBinanceFactory
-from BinanceAPI.models import TradeHistory
+from BinanceAPI.models.trade_history_model import TradeHistory
 
 
 class TradeHistoryFactory(BaseBinanceFactory):
