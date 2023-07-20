@@ -4,7 +4,7 @@ from rest_framework.serializers import (
     DecimalField,
     IntegerField,
 )
-from BinanceAPI.models import Symbol
+from BinanceAPI.models.symbol_model import Symbol
 from BinanceAPI.models.ticker_model import Ticker
 
 

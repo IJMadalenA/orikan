@@ -5,7 +5,7 @@ from rest_framework.serializers import (
     ChoiceField,
     IntegerField
 )
-from BinanceAPI.models import Account
+from BinanceAPI.models.account_model import Account
 
 
 class AccountSerializerInput(ModelSerializer):
