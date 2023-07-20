@@ -6,10 +6,11 @@ import logging
 
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
+from django.db.models import OuterRef, Subquery
 from django.db import connections
 from django.db.utils import OperationalError
 
-from BinanceAPI.models import BalanceSpot
+from BinanceAPI.models.balance_spot_model import BalanceSpot
 
 logger = logging.getLogger(__name__)
 
@@ -24,12 +25,13 @@ try:
             BalanceSpot.load_balance_spot_data()
     else:
         pass
+
 except OperationalError as e:
     # Error de base de datos, como una conexión perdida o acceso denegado
     logger.exception("Database error while checking BalanceSpot table: %s", str(e))
 except Exception as e:
     logger.exception("Error loading BalanceSpot data from Admin: %s", str(e))
-    raise
+    raise e
 
 
 @admin.register(BalanceSpot)
@@ -40,7 +42,6 @@ class BalanceSpotAdmin(ModelAdmin):
         'free',
         'locked',
         'total',
-        'created_at',
         'updated_at',
     ]
     # Campos de solo lectura
@@ -62,23 +63,22 @@ class BalanceSpotAdmin(ModelAdmin):
     # Acción personalizada
     actions = ['load_balance_spot_data']
 
-    def load_balance_spot_data(self, request, queryset):
-        try:
-            if not BalanceSpot.objects.exists():
-                BalanceSpot.load_balance_spot_data()
-        except OperationalError as e:
-            # Error de base de datos, como una conexión perdida o acceso denegado
-            print(f"Database error while checking BalanceSpot table: {str(e)}")
-        except Exception as e:
-            print(f"Error loading balance spot data from Admin: {str(e)}")
-            raise
-
-    load_balance_spot_data.short_description = "Cargar datos de balance spot"
-
     @admin.action(description="Cargar datos en el balance spot.")
     def load_balance_spot_data(self, request, queryset):
-        # Lógica para ejecutar el método de actualización
-        for balance_spot in queryset:
-            balance_spot.load_balance_spot_data()
+        BalanceSpot.load_balance_spot_data()
 
     load_balance_spot_data.short_description = "Cargar datos del balance spot"
+
+    def get_queryset(self, request):
+        # Obtenemos el queryset base de todos los balances ordenado por asset y updated_at
+        queryset = super().get_queryset(request).order_by('asset', '-updated_at')
+
+        # Usamos Subquery para obtener el último updated_at de cada asset
+        subquery = BalanceSpot.objects.filter(asset=OuterRef('asset')).values('asset').annotate(
+            last_updated=Subquery(BalanceSpot.objects.filter(asset=OuterRef('asset')).order_by('-updated_at').values('updated_at')[:1])
+        ).values('last_updated')[:1]
+
+        # Filtramos el queryset original usando el subquery
+        queryset = queryset.filter(updated_at__in=subquery)
+
+        return queryset

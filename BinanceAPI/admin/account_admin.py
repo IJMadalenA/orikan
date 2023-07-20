@@ -9,7 +9,7 @@ from django.contrib.admin import ModelAdmin
 from django.db.utils import OperationalError
 from django.db import connections
 
-from BinanceAPI.models import Account
+from BinanceAPI.models.account_model import Account
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ try:
     account_table_name = Account._meta.db_table
     if account_table_name in connections['default'].introspection.table_names():
         if not Account.objects.exists():
-            Account.load_account_data()
+            Account.load_account_data(request=None, queryset=None)
     else:
         pass
 except OperationalError as e:
@@ -74,4 +74,4 @@ class AccountAdmin(ModelAdmin):
         for account in queryset:
             account.load_account_data()
 
-    load_account_data.short_description = "Cargar datos de la cuenta"
+    load_account_data.short_description = "Load account data."
