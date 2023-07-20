@@ -90,7 +90,6 @@ class OrderBook(BaseBinanceModel):
     class Meta:
         verbose_name = "Order Book"
         verbose_name_plural = "Order Books"
-        db_table = 'order_books'
 
     def __str__(self):
         return f"{self.asset} - {self.timestamp}"

@@ -89,7 +89,8 @@ class Deposit(BaseBinanceModel):
     )
 
     class Meta:
-        db_table = 'deposits'
+        verbose_name = "Deposit"
+        verbose_name_plural = "Deposits"
 
     def __str__(self):
         return f"Deposit ID: {self.deposit_id}, Amount: {self.amount}, Asset: {self.asset}, Status: {self.status}"

@@ -175,8 +175,12 @@ class Account(BaseBinanceModel):
         help_text="Fecha de expiración de la autorizacíon de la API"
     )
 
+    class Meta:
+        verbose_name = "Account"
+        verbose_name_plural = "Accounts"
+
     @classmethod
-    def load_account_data(cls):
+    def load_account_data(cls, request, queryset=None):
         from BinanceAPI.serializers.serializers_input.account_serializer_input import AccountSerializerInput
         """
         Métodos utilizados:
@@ -229,7 +233,7 @@ class Account(BaseBinanceModel):
             raise
 
     def update_account_data(self):
-        self.load_account_data()
+        self.load_account_data(request=None, queryset=None)
 
     def __str__(self):
         if self.name:

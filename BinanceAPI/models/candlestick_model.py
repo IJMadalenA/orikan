@@ -169,11 +169,13 @@ class Candlestick(BaseBinanceModel):
         verbose_name="Capitalización de mercado",
     )
 
-    class Meta:
-        db_table = 'candlesticks'
-
     def __str__(self):
         return f"{self.symbol} - {self.open_time}"
+
+    class Meta:
+        verbose_name = "Vela"
+        verbose_name_plural = "Velas"
+        ordering = ["symbol", "open_time"]
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None

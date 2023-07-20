@@ -72,55 +72,42 @@ class BalanceSpot(BaseBinanceModel):
             # Procesar los datos del snapshot y obtener la lista de balances de assets
             balances = snapshot.get('snapshotVos', [])[0].get('data', {}).get('balances', [])
 
-            # Obtener la lista de acrónimos de los assets presentes en los balances
-            assets = [balance['asset'] for balance in balances]
-
-            # Obtener la información de todos los assets utilizando get_asset_details
-            asset_details = cls.__api__().get_asset_details()
-
-            # Crear un diccionario con los acrónimos de los assets como claves y los datos de asset como valores
-            asset_dict = {acronym: asset_details.get(acronym, {}) for acronym in assets}
+            # Obtener todos los assets existentes en la base de datos
+            existing_assets = set(Asset.objects.values_list('acronym', flat=True))
 
             # Crear una lista de diccionarios con la información de los balances
-            balance_data_list = []
+            valid_balances = []
+
             for balance in balances:
                 asset_acronym = balance['asset']
-                asset_data = asset_dict.get(asset_acronym, {})
-                asset_instance = {
-                    "acronym": asset_acronym,
-                    "min_withdraw_amount": asset_data.get('minWithdrawAmount', 0),
-                    "deposit_status": asset_data.get('depositStatus', False),
-                    "withdraw_fee": asset_data.get('withdrawFee', 0),
-                    "withdraw_status": asset_data.get('withdrawStatus', False),
-                    "deposit_tip": asset_data.get('depositTip', None),
-                    "updated_at": datetime.datetime.now(),
-                }
-                free = balance['free']
-                locked = balance['locked']
-                total = float(free) + float(locked)
-                balance_data = {
-                    'asset': asset_instance,
-                    'free': free,
-                    'locked': locked,
-                    'total': total
-                }
-                balance_data_list.append(balance_data)
+
+                # Verificar si el asset existe en la base de datos antes de procesarlo
+                if asset_acronym in existing_assets:
+                    # Obtener el ID del asset y agregarlo al diccionario de balance
+                    balance['asset'] = Asset.objects.get(acronym=asset_acronym).pk
+                    balance['total'] = float(balance.get('free')) + float(balance.get('locked'))
+
+                    valid_balances.append(balance)
+                else:
+                    logging.warning(f"El asset {asset_acronym} no existe en la base de datos y será ignorado.")
 
             # Validar y guardar la lista de diccionarios utilizando el serializador BalanceSpotSerializerInput
-            serializer = BalanceSpotSerializerInput(data=balance_data_list, many=True)
+            serializer = BalanceSpotSerializerInput(data=valid_balances, many=True)
+
             if serializer.is_valid():
                 serializer.save()
             else:
                 logging.error(serializer.errors)
         except Exception as e:
-            logging.error(f"Error al actualizar los balances de Binance: {str(e)}")
+            logging.error(f"Error al crear los balances de Binance desde load_balance_spot_data: {str(e)}")
+
 
     class Meta:
         verbose_name = "Balance Spot"
         verbose_name_plural = "Balances Spot"
 
     def __str__(self):
-        return f"{self.asset}: Free: {self.free}, Locked: {self.locked}, Total: {self.total}"
+        return str(f"{self.asset.acronym}: Free: {self.free}, Locked: {self.locked}, Total: {self.total}")
 
     def save(
             self,
@@ -129,8 +116,6 @@ class BalanceSpot(BaseBinanceModel):
             using=None,
             update_fields=None
     ):
-        # Validar que la suma de free y locked sea igual a total
-        self.total = float(self.free) + float(self.locked)
 
         # Validar que el campo free y locked sean mayores a 0. Si no lo son, se retorna un error.
         if self.free < 0 or self.locked < 0:

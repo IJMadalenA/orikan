@@ -35,7 +35,8 @@ class Wallet(BaseBinanceModel):
     )
 
     class Meta:
-        db_table = 'wallets'
+        verbose_name = "wallet"
+        verbose_name_plural = "wallets"
 
     def __str__(self):
         return self.asset

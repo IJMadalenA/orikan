@@ -1,3 +1,5 @@
+import logging
+
 from django.db.models import (
     CharField,
     IntegerField,
@@ -8,6 +10,8 @@ from django.db.models import (
 
 from BinanceAPI.models.base_binance_model import BaseBinanceModel
 from BinanceAPI.models.asset_model import Asset
+
+logger = logging.getLogger(__name__)
 
 
 class Symbol(BaseBinanceModel):
@@ -86,10 +90,12 @@ class Symbol(BaseBinanceModel):
     )
 
     class Meta:
-        db_table = 'symbols'
+        verbose_name = "Symbol"
+        verbose_name_plural = "Symbols"
+        ordering = ['symbol']
 
     def __str__(self):
-        return self.symbol
+        return str(self.symbol)
 
     @classmethod
     def load_symbol_data(cls):
@@ -126,6 +132,6 @@ class Symbol(BaseBinanceModel):
             if serializer.is_valid():
                 serializer.save()
             else:
-                print(serializer.errors)
+                logger.error(f"Error al serializar los datos de los símbolos: {serializer.errors}")
         except Exception as e:
-            print(f"Error al cargar los símbolos desde Binance: {str(e)}")
+            logger.exception(f"Error al cargar los símbolos desde Binance: {str(e)}")

@@ -75,7 +75,8 @@ class Order(BaseBinanceModel):
     )
 
     class Meta:
-        db_table = 'orders'
+        verbose_name = "Order"
+        verbose_name_plural = "Orders"
 
     def __str__(self):
         return self.order_id

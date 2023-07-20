@@ -86,7 +86,9 @@ class Withdrawal(BaseBinanceModel):
     )
 
     class Meta:
-        db_table = 'withdrawals'
+        verbose_name = "withdrawal"
+        verbose_name_plural = "withdrawals"
+        ordering = ['-timestamp']
 
     def __str__(self):
         return f"Withdrawal ID: {self.withdrawal_id}, Amount: {self.amount}, Asset: {self.asset}, Status: {self.status}"

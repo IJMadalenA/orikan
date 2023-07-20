@@ -139,7 +139,8 @@ class Trade(BaseBinanceModel):
     )
 
     class Meta:
-        db_table = 'trades'
+        verbose_name = "trade"
+        verbose_name_plural = "trades"
 
     def __str__(self):
         return self.trade_id

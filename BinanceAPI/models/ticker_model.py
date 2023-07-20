@@ -1,3 +1,6 @@
+import logging
+from _decimal import Decimal
+
 from django.core.exceptions import ValidationError
 from django.db.models import (
     IntegerField,
@@ -5,9 +8,10 @@ from django.db.models import (
     CASCADE,
     DecimalField,
 )
-
 from BinanceAPI.models.symbol_model import Symbol
 from BinanceAPI.models.base_binance_model import BaseBinanceModel
+
+logger = logging.getLogger(__name__)
 
 
 class Ticker(BaseBinanceModel):
@@ -189,6 +193,7 @@ class Ticker(BaseBinanceModel):
     class Meta:
         verbose_name = "Ticker"
         verbose_name_plural = "Tickers"
+        ordering = ['symbol']
 
     def clean_fields(self, exclude=None):
         try:
@@ -211,5 +216,50 @@ class Ticker(BaseBinanceModel):
         except Exception as e:
             raise ValidationError("Error al guardar el ticker: " + str(e))
 
+    @classmethod
+    def load_ticker_data(cls, symbol):
+        """
+        Load ticker data for the specified symbol and update the Ticker model.
+        Uses the `get_symbol_ticker` and `get_ticker` methods from the `python-binance` library.
+        """
+        try:
+            # Retrieve data using `get_symbol_ticker` method
+            symbol_ticker = cls.__api__().get_symbol_ticker(symbol=symbol)
+
+            # Retrieve data using `get_ticker` method
+            ticker = cls.__api__().get_ticker(symbol=symbol)
+
+            # Create or update the Ticker model
+            obj, created = cls.objects.get_or_create(symbol=symbol)
+
+            obj.price = Decimal(symbol_ticker['price'])
+            obj.price_change = Decimal(ticker['priceChange'])
+            obj.price_change_percent = Decimal(ticker['priceChangePercent'])
+            obj.weighted_avg_price = Decimal(ticker['weightedAvgPrice'])
+            obj.prev_close_price = Decimal(ticker['prevClosePrice'])
+            obj.last_price = Decimal(ticker['lastPrice'])
+            obj.bid_price = Decimal(ticker['bidPrice'])
+            obj.ask_price = Decimal(ticker['askPrice'])
+            obj.open_price = Decimal(ticker['openPrice'])
+            obj.high_price = Decimal(ticker['highPrice'])
+            obj.low_price = Decimal(ticker['lowPrice'])
+            obj.volume = Decimal(ticker['volume'])
+            obj.open_time = int(ticker['openTime'])
+            obj.close_time = int(ticker['closeTime'])
+            obj.first_trade_id = int(ticker['firstId'])
+            obj.last_trade_id = int(ticker['lastId'])
+            obj.trade_count = int(ticker['count'])
+
+            obj.save()
+
+            if created:
+                logger.info("Ticker data for symbol '%s' created successfully", symbol)
+            else:
+                logger.info("Ticker data for symbol '%s' updated successfully", symbol)
+
+        except Exception as e:
+            logger.exception("Error loading ticker data for symbol '%s': %s", symbol, str(e))
+            raise
+
     def __str__(self):
-        return self.symbol
+        return str(f"Ticker: " + self.symbol.symbol)
