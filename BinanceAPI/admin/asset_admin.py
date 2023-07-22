@@ -70,7 +70,7 @@ class AssetAdmin(ModelAdmin):
     # Campos de búsqueda.
     search_fields = ["acronym", "name", "deposit_status", "created_at", "updated_at"]
     # Acciones personalizadas.
-    actions = ["load_asset_data"]
+    actions = ["load_asset_and_network_data"]
 
     # Inlines.
     class NetworkAdmin(admin.StackedInline):
@@ -110,7 +110,7 @@ class AssetAdmin(ModelAdmin):
     inlines = [NetworkAdmin]
 
     @admin.action(description="Load Asset Data.")
-    def load_asset_data(self, request, queryset):
+    def load_asset_and_network_data(self, request, queryset):
         Asset.load_asset_and_network_data()
 
-    load_asset_data.short_description = "Load Asset Data."
+    load_asset_and_network_data.short_description = "Load Asset & Network Data."
