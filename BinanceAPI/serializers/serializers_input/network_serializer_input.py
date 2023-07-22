@@ -255,6 +255,42 @@ class NetworkSerializerInput(ModelSerializer):
 
         return super(NetworkSerializerInput, self).to_internal_value(formatted_data)
 
+    def save(self, **kwargs):
+        assert hasattr(self, '_errors'), (
+            'You must call `.is_valid()` before calling `.save()`.'
+        )
+
+        assert not self.errors, (
+            'You cannot call `.save()` on a serializer with invalid data.'
+        )
+
+        assert not hasattr(self, '_data'), (
+            "You cannot call `.save()` after accessing `serializer.data`."
+            "If you need to access data before committing to the database then "
+            "inspect 'serializer.validated_data' instead. "
+        )
+
+        # Validate if the network already exists.
+        network = Network.objects.get(
+            network=self.validated_data.get('network'),
+            name=self.validated_data.get('name'),
+            coin=self.validated_data.get('coin'),
+        )
+        if network is not None:
+            # Update the network.
+            self.instance = self.update(instance=network, validated_data=self.validated_data)
+            assert self.instance is not None, (
+                '`update()` did not return an object instance.'
+            )
+        else:
+            # Create the network.
+            self.instance = self.create(validated_data=self.validated_data)
+            assert self.instance is not None, (
+                '`create()` did not return an object instance.'
+            )
+
+        return self.instance
+
     def create(self, validated_data):
         """
         Create and return a new `Network` instance, given the validated data.
