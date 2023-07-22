@@ -20,8 +20,8 @@ class CandlestickFactory(BaseBinanceFactory):
         datetime(2021, 1, 1, tzinfo=UTC),
     )
     open_price = FuzzyDecimal(low=1.000).fuzz()
-    high_price = FuzzyDecimal(low=1.000).fuzz()
     low_price = FuzzyDecimal(low=1.000).fuzz()
+    high_price = low_price + FuzzyDecimal(low=1.000).fuzz()
     close_price = FuzzyDecimal(low=1.000).fuzz()
     adj_close_price = FuzzyDecimal(low=1.000).fuzz()
     close_time = FuzzyDateTime(
