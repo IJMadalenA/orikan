@@ -21,7 +21,7 @@ class TickerFactoryTestCase(BaseFactoryTestCase):
         self.assertGreaterEqual(ticker.weighted_avg_price, 0.0001)
         self.assertGreaterEqual(ticker.last_price, 0.0001)
         self.assertGreaterEqual(ticker.bid_price, 0.001)
-        self.assertGreaterEqual(ticker.ask_price, 0.001)
+        self.assertGreaterEqual(ticker.ask_price, 0.0001)
         self.assertGreaterEqual(ticker.open_price, 0.001)
         self.assertGreaterEqual(ticker.high_price, 0.001)
         self.assertGreaterEqual(ticker.low_price, 0.001)

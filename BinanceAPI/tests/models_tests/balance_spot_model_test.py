@@ -1,5 +1,3 @@
-from factory import SubFactory
-
 from BinanceAPI.factories import BalanceSpotFactory, AssetFactory
 from BinanceAPI.models.balance_spot_model import BalanceSpot
 from BinanceAPI.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
