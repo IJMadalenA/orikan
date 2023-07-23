@@ -272,6 +272,7 @@ class NetworkSerializerInput(ModelSerializer):
 
         # Validate if the network already exists.
         network = Network.objects.get(
+            # TODO - Validate if the network already exists and handle the exception.
             network=self.validated_data.get('network'),
             name=self.validated_data.get('name'),
             coin=self.validated_data.get('coin'),
