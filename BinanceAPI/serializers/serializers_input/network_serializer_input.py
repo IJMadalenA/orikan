@@ -270,16 +270,22 @@ class NetworkSerializerInput(ModelSerializer):
             "inspect 'serializer.validated_data' instead. "
         )
 
-        # Validate if the network already exists.
-        network = Network.objects.get(
-            # TODO - Validate if the network already exists and handle the exception.
-            network=self.validated_data.get('network'),
-            name=self.validated_data.get('name'),
-            coin=self.validated_data.get('coin'),
-        )
-        if network is not None:
-            # Update the network.
-            self.instance = self.update(instance=network, validated_data=self.validated_data)
+        network_exists = Network.objects.filter(network=self.validated_data.get('network'), name=self.validated_data.get('name'), coin=self.validated_data.get('coin')).exists()
+        if self.instance is not None and network_exists:
+            # Update the existing network.
+            self.instance = self.update(instance=self.instance, validated_data=self.validated_data)
+            assert self.instance is not None, (
+                '`update()` did not return an object instance.'
+            )
+        elif self.instance is not None and not network_exists:
+            # Create the network.
+            self.instance = self.create(validated_data=self.validated_data)
+            assert self.instance is not None, (
+                '`create()` did not return an object instance.'
+            )
+        elif network_exists:
+            # Update the existing network.
+            self.instance = self.update(instance=Network.objects.get(network=self.validated_data.get('network'), name=self.validated_data.get('name'), coin=self.validated_data.get('coin')), validated_data=self.validated_data)
             assert self.instance is not None, (
                 '`update()` did not return an object instance.'
             )
