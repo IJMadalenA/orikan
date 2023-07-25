@@ -1,7 +1,6 @@
 from BinanceAPI.tests.factory_tests.account_factory_test import AccountFactoryTestCase
 from BinanceAPI.tests.factory_tests.avg_price_factory_test import AvgPriceFactoryTestCase
 from BinanceAPI.tests.factory_tests.balance_spot_factory_test import BalanceSpotFactoryTestCase
-from BinanceAPI.tests.factory_tests.candlestick_factory_test import CandlestickFactoryTestCase
 from BinanceAPI.tests.factory_tests.deposit_factory_test import DepositFactoryTestCase
 from BinanceAPI.tests.factory_tests.filters_factory_test import (
     # FilterFactoryTestCase,

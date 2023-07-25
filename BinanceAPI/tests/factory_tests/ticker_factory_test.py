@@ -1,3 +1,4 @@
+import datetime
 from _decimal import Decimal
 
 from BinanceAPI.factories import TickerFactory
@@ -26,8 +27,8 @@ class TickerFactoryTestCase(BaseFactoryTestCase):
         self.assertGreaterEqual(ticker.high_price, 0.001)
         self.assertGreaterEqual(ticker.low_price, 0.001)
         self.assertGreaterEqual(ticker.volume, 0.001)
-        self.assertIsInstance(ticker.open_time, int)
-        self.assertIsInstance(ticker.close_time, int)
+        self.assertIsInstance(ticker.open_time, datetime.datetime)
+        self.assertIsInstance(ticker.close_time, datetime.datetime)
         self.assertIsInstance(ticker.first_trade_id, int)
         self.assertIsInstance(ticker.last_trade_id, int)
         self.assertIsInstance(ticker.trade_count, int)
