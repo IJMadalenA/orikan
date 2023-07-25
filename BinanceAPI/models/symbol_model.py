@@ -101,11 +101,16 @@ class Symbol(BaseBinanceModel):
     def load_symbol_data(cls):
         from BinanceAPI.serializers.serializers_input.symbol_serializer_input import SymbolSerializerInput
         try:
-            symbols_info = cls.__api__().get_all_tickers()
+            symbo = cls.__api__().get_all_tickers()
+
+            # get_symbol_info
 
             symbol_data_list = []
             for symbol_info in symbols_info:
                 symbol = symbol_info['symbol']
+
+
+
                 status = 'TRADING'
                 base_asset_acronym = symbol[:-3]
                 quote_asset_acronym = symbol[-3:]
@@ -135,3 +140,11 @@ class Symbol(BaseBinanceModel):
                 logger.error(f"Error al serializar los datos de los símbolos: {serializer.errors}")
         except Exception as e:
             logger.exception(f"Error al cargar los símbolos desde Binance: {str(e)}")
+
+    def get_of_create(self):
+        try:
+            symbol = Symbol.objects.get(symbol=self.symbol)
+        except Symbol.DoesNotExist:
+            symbol = self
+            symbol.save()
+        return symbol
