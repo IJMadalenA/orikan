@@ -1,11 +1,13 @@
+from rest_framework.fields import ChoiceField
 from rest_framework.relations import SlugRelatedField
 from rest_framework.serializers import (
     ModelSerializer,
     DecimalField,
     IntegerField,
+    DateTimeField,
 )
 from BinanceAPI.models.symbol_model import Symbol
-from BinanceAPI.models.ticker_model import Ticker
+from BinanceAPI.models.ticker_model import Ticker, TIME_FRAME_CHOICES
 
 
 class TickerSerializerInput(ModelSerializer):
@@ -44,6 +46,10 @@ class TickerSerializerInput(ModelSerializer):
         slug_field='symbol',
         queryset=Symbol.objects.all(),
         help_text="Trading pair symbol.",
+    )
+    time_frame = ChoiceField(
+        choices=TIME_FRAME_CHOICES,
+        help_text="Time frame.",
     )
     price = DecimalField(
         max_digits=20,
@@ -95,6 +101,16 @@ class TickerSerializerInput(ModelSerializer):
         decimal_places=10,
         help_text="Highest price.",
     )
+    close_price = DecimalField(
+        max_digits=20,
+        decimal_places=10,
+        help_text="Closing price.",
+    )
+    adj_close_price = DecimalField(
+        max_digits=20,
+        decimal_places=10,
+        help_text="Adjusted closing price.",
+    )
     low_price = DecimalField(
         max_digits=20,
         decimal_places=10,
@@ -105,10 +121,10 @@ class TickerSerializerInput(ModelSerializer):
         decimal_places=10,
         help_text="Volume.",
     )
-    open_time = IntegerField(
+    open_time = DateTimeField(
         help_text="Opening timestamp.",
     )
-    close_time = IntegerField(
+    close_time = DateTimeField(
         help_text="Closing timestamp.",
     )
     first_trade_id = IntegerField(
@@ -125,16 +141,35 @@ class TickerSerializerInput(ModelSerializer):
         decimal_places=10,
         help_text="Maker commission.",
     )
+    market_cap = DecimalField(
+        max_digits=20,
+        decimal_places=10,
+        help_text="Market capitalization.",
+    )
     taker_commission = DecimalField(
         max_digits=20,
         decimal_places=10,
         help_text="Taker commission.",
+    )
+    taker_buy_base_asset_volume = DecimalField(
+        max_digits=20,
+        decimal_places=10,
+        help_text="Taker buy base asset volume.",
+    )
+    taker_buy_quote_asset_volume = DecimalField(
+        max_digits=20,
+        decimal_places=10,
+        help_text="Taker buy quote asset volume.",
+    )
+    number_of_trades = IntegerField(
+        help_text="Number of trades.",
     )
 
     class Meta:
         model = Ticker
         fields = [
             "symbol",
+            "time_frame",
             "price",
             "price_change",
             "price_change_percent",
@@ -145,6 +180,8 @@ class TickerSerializerInput(ModelSerializer):
             "ask_price",
             "open_price",
             "high_price",
+            "close_price",
+            "adj_close_price",
             "low_price",
             "volume",
             "open_time",
@@ -153,5 +190,10 @@ class TickerSerializerInput(ModelSerializer):
             "last_trade_id",
             "trade_count",
             "maker_commission",
+            "market_cap",
             "taker_commission",
+            "taker_buy_quote_asset_volume",
+            "quote_asset_volume",
+            "taker_buy_base_asset_volume",
+            "number_of_trades",
         ]
