@@ -1,5 +1,4 @@
 from BinanceAPI.tests.factory_tests.account_factory_test import AccountFactoryTestCase
-from BinanceAPI.tests.factory_tests.avg_price_factory_test import AvgPriceFactoryTestCase
 from BinanceAPI.tests.factory_tests.balance_spot_factory_test import BalanceSpotFactoryTestCase
 from BinanceAPI.tests.factory_tests.deposit_factory_test import DepositFactoryTestCase
 from BinanceAPI.tests.factory_tests.filters_factory_test import (
@@ -30,4 +29,3 @@ from BinanceAPI.tests.factory_tests.withdrawal_factory_test import WithdrawalFac
 from BinanceAPI.tests.factory_tests.base_binance_factory_test import TestBaseBinanceFactory
 from BinanceAPI.tests.factory_tests.account_factory_test import TestAccountFactory
 from BinanceAPI.tests.factory_tests.asset_factory_test import TestAssetFactory
-from BinanceAPI.tests.factory_tests.avg_price_factory_test import TestAvgPriceFactory

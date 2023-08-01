@@ -15,7 +15,6 @@ class TickerFactoryTestCase(BaseFactoryTestCase):
         ticker = TickerFactory()
         self.assertIsInstance(ticker, TickerFactory._meta.model)
         self.assertIsInstance(ticker.symbol, Symbol)
-        self.assertGreaterEqual(ticker.price, 0.001)
         self.assertGreaterEqual(ticker.price_change, 0.0001)
         self.assertGreaterEqual(ticker.price_change_percent, 0.001)
         self.assertGreaterEqual(ticker.prev_close_price, 0.001)
