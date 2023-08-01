@@ -47,7 +47,6 @@ class TickerFactory(BaseBinanceFactory):
     """
     symbol = SubFactory(factory=SymbolFactory)
     time_frame = FuzzyChoice(choices=['1d', '1w', '1M', '1Y'])
-    price = FuzzyDecimal(low=1.000)
     price_change = FuzzyDecimal(low=1.000)
     price_change_percent = FuzzyDecimal(low=1.000)
     weighted_avg_price = FuzzyDecimal(low=1.000)
