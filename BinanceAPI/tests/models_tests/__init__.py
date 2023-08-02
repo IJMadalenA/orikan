@@ -1,6 +1,5 @@
 from BinanceAPI.tests.models_tests.account_model_test import AccountModelTestCase
 from BinanceAPI.tests.models_tests.asset_model_test import AssetModelTestCase
-from BinanceAPI.tests.models_tests.avg_model_test import AvgPriceModelTestCase
 from BinanceAPI.tests.models_tests.balance_spot_model_test import BalanceSpotModelTestCase
 from BinanceAPI.tests.models_tests.deposit_model_test import DepositModelTestCase
 from BinanceAPI.tests.models_tests.network_model_test import NetworkModelTestCase
