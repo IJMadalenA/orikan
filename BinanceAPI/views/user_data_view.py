@@ -17,15 +17,9 @@ def message_handler(message):
 
     api_key = os.environ.get("BINANCE_API_KEY", None)
 
-    print(" = = = = = API_KEY: ", api_key, " = = = = = ")
-
-    print(message)
-
     client = Client(key=api_key, base_url='https://api.binance.com')
-    print(" = = = = = CLIENT: ", client, " = = = = = ")
 
     response = client.new_listen_key()
-    print(" = = = = = RESPONSE: ", response, " = = = = = ")
 
     logging.info("Receiving listen key: {}".format(response["listenKey"]))
 
