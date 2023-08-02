@@ -16,7 +16,6 @@ class TickerSerializerInputTestCase(TestCase):
         data = {
             'symbol': self.symbol,
             'time_frame': '1d',  # Added to pass validation
-            'price': '35000.123456',
             'price_change': '123.456789',
             'price_change_percent': '0.35',
             'weighted_avg_price': '35500.678912',
@@ -51,7 +50,6 @@ class TickerSerializerInputTestCase(TestCase):
         data = {}  # Missing all required fields
         required_fields = [
             'symbol',
-            'price',
             'price_change',
             'price_change_percent',
             'weighted_avg_price',
@@ -91,7 +89,6 @@ class CodiumAITestTickerSerializerInput(unittest.TestCase):
         expected_data = {
             'symbol': symbol.symbol,
             'time_frame': ticker.time_frame,
-            'price': ticker.price,
             'price_change': ticker.price_change,
             'price_change_percent': ticker.price_change_percent,
             'weighted_avg_price': ticker.weighted_avg_price,
@@ -100,6 +97,7 @@ class CodiumAITestTickerSerializerInput(unittest.TestCase):
             'bid_price': ticker.bid_price,
             'ask_price': ticker.ask_price,
             'open_price': ticker.open_price,
+            'close_price': ticker.close_price,
             'high_price': ticker.high_price,
             'low_price': ticker.low_price,
             'volume': ticker.volume,
@@ -139,7 +137,6 @@ class CodiumAITestTickerSerializerInput(unittest.TestCase):
         ticker = TickerFactory(symbol=symbol)
         serializer = TickerSerializerInput(instance=ticker)
         self.assertIsInstance(serializer.data['symbol'], str)
-        self.assertIsInstance(serializer.data['price'], str)
         self.assertIsInstance(serializer.data['price_change'], str)
         self.assertIsInstance(serializer.data['price_change_percent'], str)
         self.assertIsInstance(serializer.data['weighted_avg_price'], str)
