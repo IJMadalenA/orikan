@@ -49,8 +49,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',  # Aplicación para integrar Dash en Django,
     'django.contrib.staticfiles',
-    'BinanceAPI',
+
+    'rest_framework',  # Django REST Framework
+    'binance_api',  # Aplicación para interactuar con la API de Binance
+    'graph_generator',  # Aplicación para generar gráficas
 ]
 
 MIDDLEWARE = [
