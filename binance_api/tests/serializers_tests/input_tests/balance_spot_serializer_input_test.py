@@ -3,8 +3,8 @@ from decimal import Decimal
 
 from factory import SubFactory
 
-from BinanceAPI.factories import AssetFactory
-from BinanceAPI.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
+from binance_api.factories import AssetFactory
+from binance_api.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
 
 
 class BalanceSpotSerializerInputTestCase(TestCase):

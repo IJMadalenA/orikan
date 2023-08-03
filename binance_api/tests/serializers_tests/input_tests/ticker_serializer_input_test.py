@@ -3,8 +3,8 @@ from datetime import datetime
 
 from django.test import TestCase
 
-from BinanceAPI.factories import SymbolFactory, TickerFactory
-from BinanceAPI.serializers.serializers_input.ticker_serializer_input import TickerSerializerInput
+from binance_api.factories import SymbolFactory, TickerFactory
+from binance_api.serializers.serializers_input.ticker_serializer_input import TickerSerializerInput
 
 
 class TickerSerializerInputTestCase(TestCase):

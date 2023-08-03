@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from BinanceAPI.serializers.serializers_input.account_serializer_input import AccountSerializerInput
-from BinanceAPI.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
+from binance_api.serializers.serializers_input.account_serializer_input import AccountSerializerInput
+from binance_api.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
 
 
 class AccountSerializerInputTestCase(TestCase):
