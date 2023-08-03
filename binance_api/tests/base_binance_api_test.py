@@ -3,7 +3,7 @@ import environ
 import os
 
 # Binance imports.
-from BinanceAPI.views.base_binance_api import BaseBinanceAPI
+from binance_api.views.base_binance_api import BaseBinanceAPI
 
 env = environ.Env()
 
