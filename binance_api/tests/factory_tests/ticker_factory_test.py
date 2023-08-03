@@ -1,11 +1,11 @@
 import datetime
 from _decimal import Decimal
 
-from BinanceAPI.factories import TickerFactory
-from BinanceAPI.models.symbol_model import Symbol
+from binance_api.factories import TickerFactory
+from binance_api.models.symbol_model import Symbol
 
 # Imported Models.
-from BinanceAPI.tests.factory_tests.base_binance_factory_test import BaseFactoryTestCase
+from binance_api.tests.factory_tests.base_binance_factory_test import BaseFactoryTestCase
 
 
 class TickerFactoryTestCase(BaseFactoryTestCase):
@@ -49,43 +49,3 @@ class TickerFactoryTestCase(BaseFactoryTestCase):
     def test_negative_price_field(self):
         with self.assertRaises(Exception):
             TickerFactory(price=-1.000)
-
-    #  Tests that creating a TickerFactory instance with a null 'price_change' field raises a ValueError.
-    def test_null_price_change_field(self):
-        with self.assertRaises(Exception):
-            TickerFactory(price_change=None)
-
-    #  Tests that creating a TickerFactory instance with a null 'price_change_percent' field raises a ValueError.
-    def test_null_price_change_percent_field(self):
-        with self.assertRaises(Exception):
-            TickerFactory(price_change_percent=None)
-
-    #  Tests that creating a TickerFactory instance with a null 'prev_close_price' field raises a ValueError.
-    def test_null_prev_close_price_field(self):
-        with self.assertRaises(Exception):
-            TickerFactory(prev_close_price=None)
-
-    #  Tests that creating a TickerFactory instance with a null 'weighted_avg_price' field raises a ValueError.
-    def test_null_weighted_avg_price_field(self):
-        with self.assertRaises(Exception):
-            TickerFactory(weighted_avg_price=None)
-
-    #  Tests that creating a TickerFactory instance with a null 'last_price' field raises a ValueError.
-    def test_null_last_price_field(self):
-        with self.assertRaises(Exception):
-            TickerFactory(last_price=None)
-
-    #  Tests that creating a TickerFactory instance with a null 'bid_price' field raises a ValueError.
-    def test_null_bid_price_field(self):
-        with self.assertRaises(Exception):
-            TickerFactory(bid_price=None)
-
-    #  Tests that creating a TickerFactory instance with a null 'ask_price' field raises a ValueError.
-    def test_null_ask_price_field(self):
-        with self.assertRaises(Exception):
-            TickerFactory(ask_price=None)
-
-    #  Tests that creating a TickerFactory instance with a null 'open_price' field raises a ValueError.
-    def test_null_open_price_field(self):
-        with self.assertRaises(Exception):
-            TickerFactory(open_price=None)

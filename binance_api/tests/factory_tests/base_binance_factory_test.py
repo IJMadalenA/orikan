@@ -1,8 +1,8 @@
 # Imported from Django:
 from django.test import TestCase
 
-from BinanceAPI.factories import BaseBinanceFactory
-from BinanceAPI.models.base_binance_model import BaseBinanceModel
+from binance_api.factories import BaseBinanceFactory
+from binance_api.models.base_binance_model import BaseBinanceModel
 
 
 class BaseFactoryTestCase(TestCase):

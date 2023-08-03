@@ -1,7 +1,7 @@
 # Imported Models.
-from BinanceAPI.tests.factory_tests.base_binance_factory_test import BaseFactoryTestCase
+from binance_api.tests.factory_tests.base_binance_factory_test import BaseFactoryTestCase
 
-from BinanceAPI.factories import (
+from binance_api.factories import (
     FilterFactory,
     PriceFilterFactory,
     PercentPriceFilterFactory,

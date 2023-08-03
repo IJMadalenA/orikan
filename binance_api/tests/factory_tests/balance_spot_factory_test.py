@@ -1,7 +1,7 @@
-from BinanceAPI.factories import BalanceSpotFactory
+from binance_api.factories import BalanceSpotFactory
 
 # Imported Models.
-from BinanceAPI.tests.factory_tests.base_binance_factory_test import BaseFactoryTestCase
+from binance_api.tests.factory_tests.base_binance_factory_test import BaseFactoryTestCase
 
 
 class BalanceSpotFactoryTestCase(BaseFactoryTestCase):
