@@ -1,7 +1,7 @@
-from BinanceAPI.factories import BalanceSpotFactory, AssetFactory
-from BinanceAPI.models.balance_spot_model import BalanceSpot
-from BinanceAPI.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
-from BinanceAPI.tests.models_tests.base_binance_model_test import BaseModelTestCase
+from binance_api.factories import BalanceSpotFactory, AssetFactory
+from binance_api.models.balance_spot_model import BalanceSpot
+from binance_api.serializers.serializers_input.balance_spot_serializer_input import BalanceSpotSerializerInput
+from binance_api.tests.models_tests.base_binance_model_test import BaseModelTestCase
 from decimal import Decimal
 
 
