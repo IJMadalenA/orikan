@@ -18,6 +18,10 @@ wheel = "^0.40.0"
 pip = "^23.1.2"
 djangorestframework = "^3.14.0"
 factory-boy = "^3.2.1"
+django-plotly-dash = "^2.2.1"
+plotly = "^5.15.0"
+pandas = "^2.0.3"
+django-bootstrap4 = "^23.2"
 
 
 [tool.poetry.group.dev.dependencies]
