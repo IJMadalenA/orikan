@@ -28,7 +28,7 @@ coverage combine -q --rcfile="${rcfile_path}"
 
 # GENERATE THE HTML FILES.
 rm -fr compose/coverage/html_report
-coverage html --quiet --directory=tesseract-vault/coverage/html_report --rcfile="${rcfile_path}"
+coverage html --quiet --directory=compose/coverage/html_report --rcfile="${rcfile_path}"
 
 # ERASE THE SQLite FILES.
 coverage erase

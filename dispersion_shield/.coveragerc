@@ -1,0 +1,30 @@
+# .coveragerc to control coverage.py
+
+[run]
+branch = True
+
+cover_pylib = False
+
+# FILES TO SKIP FROM THE SCAN.
+omit =
+
+
+parallel = True
+
+sigterm = True
+
+[report]
+fail_under = 95
+
+precision = 2
+
+show_missing = True
+
+# SKIP THE FILES THAT ARE ENTIRELY COVERED.
+skip_covered = True
+
+# SKIP THE EMPTY FILES.
+skip_empty = True
+
+[html]
+directory = ./compose/coverage/html_report/

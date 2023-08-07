@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$DATABASE" = "empleable_db" ]
+if [ "$DATABASE" = "solemnace_galleries" ]
 then
     echo "Waiting for postgres..."
 
