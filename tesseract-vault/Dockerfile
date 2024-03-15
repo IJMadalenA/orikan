@@ -1,4 +1,4 @@
-ARG PYTHON_IMAGE=python:3.11-alpine
+ARG PYTHON_IMAGE=python:3.13.0a4-alpine
 ARG BUILD_ENVIRONMENT=production
 ARG HOME_DIR=/home/orikan/
 
